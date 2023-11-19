@@ -109,7 +109,7 @@ MonoBehaviour:
   nextActionTimer: 1
   miningSpeed: 0.5
   deployingSpeed: 0.25
-  isBeingDeployed: 0
+  isBeingDeployed: 1
 --- !u!195 &-9147385658357972033
 NavMeshAgent:
   m_ObjectHideFlags: 0

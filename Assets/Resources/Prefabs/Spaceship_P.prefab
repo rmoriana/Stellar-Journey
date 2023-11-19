@@ -190,7 +190,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fbf43c12d2ffc54ca690820cf29174a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startEnergyAmount: 25
+  maxEnergyAmount: 50
   mineralAmount: 0
+  energyGainSpeed: 2
+  minerEnergyReq: 5
+  defenderEnergyReq: 10
+  numSelectedTroops: 2
 --- !u!1001 &680501158757075108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -199,6 +205,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2150226977601351446}
     m_Modifications:
+    - target: {fileID: 3814490392695944487, guid: d620edef8b55c7042a6276c09211b048, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4086340382540058210, guid: d620edef8b55c7042a6276c09211b048, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.17
@@ -261,6 +271,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2150226977601351446}
     m_Modifications:
+    - target: {fileID: 3814490392695944487, guid: d620edef8b55c7042a6276c09211b048, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4086340382540058210, guid: d620edef8b55c7042a6276c09211b048, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.18
@@ -323,6 +337,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2150226977601351446}
     m_Modifications:
+    - target: {fileID: 3814490392695944487, guid: d620edef8b55c7042a6276c09211b048, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4086340382540058210, guid: d620edef8b55c7042a6276c09211b048, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.17
@@ -385,6 +403,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2150226977601351446}
     m_Modifications:
+    - target: {fileID: 3814490392695944487, guid: d620edef8b55c7042a6276c09211b048, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4086340382540058210, guid: d620edef8b55c7042a6276c09211b048, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.18
