@@ -55,7 +55,7 @@ public class UnitDeployment : MonoBehaviour
             return;
         }
 
-        //Se entiende que si le da al boton es para cancelar la accion
+        //Se entiende que si le da al boton otra vez es para cancelar la accion
         if(lastUnitType == unitType)
         {
             Destroy(nuevaUnidad);
@@ -136,6 +136,7 @@ public class UnitDeployment : MonoBehaviour
             Destroy(nuevaUnidad);
             deployingUnit = false;
             troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
+            lastUnitType = -1;
         }
     }
 

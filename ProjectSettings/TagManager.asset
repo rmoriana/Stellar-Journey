@@ -9,6 +9,7 @@ TagManager:
   - Suelo
   - InteractionPosition
   - Nave
+  - CameraLimit
   layers:
   - Default
   - TransparentFX
