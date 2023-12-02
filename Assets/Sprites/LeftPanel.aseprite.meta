@@ -130,7 +130,7 @@ ScriptedImporter:
       y: 4
       width: 160
       height: 96
-    spriteID: 87cb58b7d6c1deb4998546518f26c681
+    spriteID: 6d6e0bc0aab6ee549af84e81245accd7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -150,7 +150,7 @@ ScriptedImporter:
       y: 108
       width: 160
       height: 75
-    spriteID: cd9b0bee876b7b443b43cc55194d71f0
+    spriteID: 18a67c17992a1a44fbd522d9bc070687
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -175,7 +175,7 @@ ScriptedImporter:
         y: 0
         width: 160
         height: 96
-      spriteId: 87cb58b7d6c1deb4998546518f26c681
+      spriteId: 6d6e0bc0aab6ee549af84e81245accd7
     - name: LeftPanel_Frame_1
       frameIndex: 1
       cellRect:
@@ -183,7 +183,7 @@ ScriptedImporter:
         y: 0
         width: 160
         height: 75
-      spriteId: cd9b0bee876b7b443b43cc55194d71f0
+      spriteId: 18a67c17992a1a44fbd522d9bc070687
     linkedCells: []
     parentIndex: -1
   platformSettings: []

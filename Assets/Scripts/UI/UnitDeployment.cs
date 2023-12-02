@@ -76,12 +76,12 @@ public class UnitDeployment : MonoBehaviour
             case 0: //Minero
                     deployingUnit = true;
                     unitEnergyReq = minerEnergyReq;
-                    unitName = "Minero_P";
+                    unitName = "Minero";
                 break;
             case 1: //Defensor
                     deployingUnit = true;
                     unitEnergyReq = defenderEnergyReq;
-                    unitName = "Luchador_P";                              
+                    unitName = "Defender";                              
                 break;
         }
 
@@ -110,16 +110,17 @@ public class UnitDeployment : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mouseWorldPos, Vector2.zero);
-            if (hit.collider != null)
+            int layerMask = 1 << LayerMask.NameToLayer("Suelo"); //Así detecta solo esta capa
+            Collider2D hit = Physics2D.OverlapPoint(mouseWorldPos, layerMask);
+            if (hit != null)
             {
-                Debug.Log(hit.collider.tag);
-                if (hit.collider.tag == "Suelo")
+                Debug.Log(hit.GetComponent<CompositeCollider2D>().tag);
+                if (hit.GetComponent<CompositeCollider2D>().tag == "Suelo")
                 {
-                    if (this.GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
+                    if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
                     {
-                        this.GetComponent<EnergyController>().useEnergy(unitEnergyReq);
-                        nuevaUnidad.GetComponent<Minero_C>().isBeingDeployed = false;
+                        GetComponent<EnergyController>().useEnergy(unitEnergyReq);
+                        nuevaUnidad.GetComponent<CombatController>().isBeingDeployed = false;
                         nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
                         deployingUnit = false;
                         troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
@@ -143,16 +144,16 @@ public class UnitDeployment : MonoBehaviour
     //Accesos rápidos para seleccionar tropa con las teclas 1-4
     private void keyboardListener()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectUnit(0);
-        }else if (Input.GetKeyUp(KeyCode.Alpha2))
+        }else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectUnit(1);
-        }else if (Input.GetKeyUp(KeyCode.Alpha3))
+        }else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             selectUnit(2);
-        }else if (Input.GetKeyUp(KeyCode.Alpha4))
+        }else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             selectUnit(3);
         }

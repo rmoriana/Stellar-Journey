@@ -10,6 +10,10 @@ TagManager:
   - InteractionPosition
   - Nave
   - CameraLimit
+  - PlayerUnit
+  - EnemyUnit
+  - SueloOscuro
+  - SueloSuperior
   layers:
   - Default
   - TransparentFX
@@ -18,7 +22,7 @@ TagManager:
   - Water
   - UI
   - nave
-  - 
+  - Suelo
   - 
   - 
   - 
@@ -53,9 +57,18 @@ TagManager:
   - name: recolectables
     uniqueID: 4139078995
     locked: 0
+  - name: Nest
+    uniqueID: 3412478165
+    locked: 0
   - name: unidades
     uniqueID: 1479920675
     locked: 0
   - name: nave
     uniqueID: 1950668953
+    locked: 0
+  - name: bullets
+    uniqueID: 1575639559
+    locked: 0
+  - name: UI
+    uniqueID: 3193373513
     locked: 0

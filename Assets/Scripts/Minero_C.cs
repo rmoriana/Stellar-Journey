@@ -24,13 +24,12 @@ public class Minero_C : MonoBehaviour
     private float miningCooldown;
     public float deployingSpeed;
     private float deployingCooldown;
-    public bool isBeingDeployed;
 
     //Inicializa algunas variables y controla que las unidades no roten
     void Start()
     {
         spaceship = GameObject.Find("Spaceship_P");
-        agent = this.GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
     }
@@ -38,7 +37,7 @@ public class Minero_C : MonoBehaviour
     //Si la unidad no está siendo colocada, actualiza la máquina de estados
     void Update()
     {
-        if (!isBeingDeployed)
+        if (!GetComponent<CombatController>().isBeingDeployed)
         {
             stateMachine();
         }

@@ -22,6 +22,7 @@ public class Spaceship_C : MonoBehaviour
     public void deployMineral()
     {
         mineralAmount++;
+        GameObject.Find("BottomRightPanel").GetComponent<RecursosController>().addResource();
     }
 
     //Indica la energía que dispone el jugador al inicio del nivel
