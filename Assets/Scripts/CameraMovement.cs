@@ -13,15 +13,16 @@ public class CameraMovement : MonoBehaviour
     public float remainingDistance;
     public float minZoom, maxZoom;
     public float zoomSpeed;
-
-    void Start()
-    {
-        
-    }
+    public GameObject spaceship;
 
     // Update is called once per frame
     void Update()
     {
+        if (spaceship.GetComponent<Spaceship_C>().getGameHasFinished() || spaceship.GetComponent<Spaceship_C>().getGameStarting())
+        {
+            return;
+        }
+
         checkKeyboardInput();
         checkMouseWheel();
 
@@ -52,8 +53,6 @@ public class CameraMovement : MonoBehaviour
             freeFlightCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize = minZoom;
             remainingDistance = 0;
         }
-
-        
     }
 
     //Movimiento de la cámara con WASD
@@ -64,22 +63,18 @@ public class CameraMovement : MonoBehaviour
         if(Input.GetKey(KeyCode.W) && transform.position.y < upLimit) 
         {
             movementVector.y = 1;
-            //transform.Translate(Vector2.up * cameraSpeed);
         }
         else if (Input.GetKey(KeyCode.S) && transform.position.y > downLimit)
         {
-            //transform.Translate(Vector2.down * cameraSpeed);
             movementVector.y = -1;
         }
         
         if (Input.GetKey(KeyCode.D) && transform.position.x < rightLimit)
         {
-            //transform.Translate(Vector2.right * cameraSpeed);
             movementVector.x = 1;
         }
         else if(Input.GetKey(KeyCode.A) && transform.position.x > leftLimit) 
         {
-            //transform.Translate(Vector2.left * cameraSpeed);
             movementVector.x = -1;
         }
 

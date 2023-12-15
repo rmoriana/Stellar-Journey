@@ -4,11 +4,15 @@ using UnityEngine.AI;
 public class MenteColmenaController: MonoBehaviour
 {
     [Header("Gestión de la energía")]
-    public float currentEnergy;
-    public float updateEnergyGenerationTime;
+    private float currentEnergy;
+    public float baseEnergy;
+    public float cycleTime;
     public float currentEnergyMultiplier;
     public float energyMultiplierFactor;
-    private float updateEnergyGenerationTimer;
+    private float cycleTimer;
+    public float timeBetweenCycle;
+    private float timeBetweenCycleTimer;
+    private bool peaceBetweenCycle;
 
     [Header("Coste de los enemigos")]
     public int desertScarabCost;
@@ -22,36 +26,73 @@ public class MenteColmenaController: MonoBehaviour
     private int groupAttackNum;
     private int groupAttackCounter;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        getEnergy();
-        setSpawnStrategy();
-    }
+    public GameObject spaceship;
+    public float peaceTime;
+    private float peaceTimer;
+    public GameObject[] spawnPoints;  
+    private bool startFirstCycle;
+    private bool firstCycleFinished;
+
     // Update is called once per frame
     void Update()
     {
-        updateEnergyGenerationTimer += Time.deltaTime;
-        if (updateEnergyGenerationTimer >= updateEnergyGenerationTime)
+        if (startFirstCycle)
         {
-            currentEnergyMultiplier += energyMultiplierFactor;
-            getEnergy();
-            setSpawnStrategy();
-            updateEnergyGenerationTimer = 0;
+            if (peaceTime > peaceTimer)
+            {
+                peaceTimer += Time.deltaTime;
+            }
+            else
+            {
+                getEnergy();
+                setSpawnStrategy();
+                startFirstCycle = false;
+                firstCycleFinished = true;
+            }
         }
 
-        spawnTimer += Time.deltaTime;
-        if (spawnTimer >= currentSpawnInterval)
+        if (firstCycleFinished)
         {
-            spawnUnit();
-            spawnTimer = 0;
+            
+            if (cycleTimer >= cycleTime)
+            {
+                peaceBetweenCycle = true;
+            }
+            else
+            {
+                cycleTimer += Time.deltaTime;
+            }
+
+            if (peaceBetweenCycle)
+            {
+                timeBetweenCycleTimer += Time.deltaTime;
+                if(timeBetweenCycleTimer >= timeBetweenCycle)
+                {
+                    peaceBetweenCycle = false;
+                    currentEnergyMultiplier += energyMultiplierFactor;
+                    getEnergy();
+                    setSpawnStrategy();
+                    cycleTimer = 0;
+                    timeBetweenCycleTimer = 0;
+                }
+            }
+
+            if (!peaceBetweenCycle)
+            {
+                spawnTimer += Time.deltaTime;
+                if (spawnTimer >= currentSpawnInterval)
+                {
+                    spawnUnit();
+                    spawnTimer = 0;
+                }
+            }
         }
     }
 
     //Obtiene la energía de la siguiente franja de tiempo
     private void getEnergy()
     {
-        currentEnergy += GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getGameEnergy() * currentEnergyMultiplier;
+        currentEnergy += baseEnergy * currentEnergyMultiplier;
     }
 
     //Calcular las unidades que va a invocar en la siguiente franja de tiempo
@@ -71,9 +112,8 @@ public class MenteColmenaController: MonoBehaviour
             threadLevel = 0;
         }
 
-
         unitsLeftToSpawn = Mathf.RoundToInt(currentEnergy / desertScarabCost); //Calcula cuantas unidades puede generar con la energía que tiene
-        currentSpawnInterval = (updateEnergyGenerationTime * 0.9f) / ((float)unitsLeftToSpawn); //Calcula cada cuanto tiene que generar una unidad para que le de tiempo antes del cambio de intervalo
+        currentSpawnInterval = (cycleTime * 0.9f) / ((float)unitsLeftToSpawn); //Calcula cada cuanto tiene que generar una unidad para que le de tiempo antes del cambio de intervalo
         currentEnergy -= desertScarabCost * unitsLeftToSpawn; //Resta la energía de todas las unidades que va a generar en este intervalo
         //Debug.Log("Nuevo ciclo");
         //Debug.Log("Saldran " + unitsLeftToSpawn + " unidades, una cada " + currentSpawnInterval + " segundos");
@@ -83,18 +123,19 @@ public class MenteColmenaController: MonoBehaviour
         {
             groupAttackNum = Mathf.RoundToInt(unitsLeftToSpawn / 3);
         }
-
-
     }
 
     //Invoca una nueva unidad
     private void spawnUnit()
     {
-        GameObject newUnit = Instantiate(Resources.Load("Prefabs/DesertScarab"), new Vector3(Random.Range(-3.45f, 3.45f), Random.Range(10.5f, 12.5f), 0), new Quaternion(0, 0, 0, 0)) as GameObject;
+        GameObject spawnPoint = getSpawnPoint();
+        GameObject newUnit = Instantiate(Resources.Load("Prefabs/DesertScarab"), spawnPoint.transform.position, new Quaternion(0, 0, 0, 0)) as GameObject;
         newUnit.GetComponent<EnemyController>().menteColmena = gameObject;
         newUnit.GetComponent<EnemyController>().agent = newUnit.GetComponent<NavMeshAgent>();
-        newUnit.GetComponent<NavMeshAgent>().updateRotation = false;
-        newUnit.GetComponent<NavMeshAgent>().updateUpAxis = false;
+        newUnit.GetComponent<EnemyController>().spaceship = spaceship;
+        newUnit.GetComponent<EnemyController>().currentState = 0;
+        newUnit.GetComponent<CombatController>().isBeingDeployed = true;
+
         unitsLeftToSpawn--;
 
         switch (threadLevel)
@@ -103,7 +144,7 @@ public class MenteColmenaController: MonoBehaviour
                 spawnAndAttack(newUnit);
                 break;
             case 1:
-                tripleAttack(newUnit);
+                tripleAttack();
                 break;
             case 2:
                 oneBigAttack();
@@ -144,6 +185,14 @@ public class MenteColmenaController: MonoBehaviour
                 }
             }
 
+            if(nearestPlayerUnit == GameObject.Find("Spaceship_P"))
+            {
+                if (nearestPlayerUnit.GetComponent<Spaceship_C>().getGameHasFinished())
+                {
+                    return null;
+                }
+            }
+
             return nearestPlayerUnit;
         }
 
@@ -152,7 +201,6 @@ public class MenteColmenaController: MonoBehaviour
 
     private void spawnAndAttack(GameObject newUnit)
     {
-        newUnit.GetComponent<EnemyController>().changeState(1);
         newUnit.GetComponent<EnemyController>().setTargetAndAttack(findNearestPlayerUnit(newUnit));
     }
 
@@ -160,7 +208,6 @@ public class MenteColmenaController: MonoBehaviour
     {
         if (unitsLeftToSpawn == 0)
         {
-            //Debug.Log("Lanzo ataque");
             GameObject[] swarm = GameObject.FindGameObjectsWithTag("EnemyUnit");
             for (int i = 0; i < swarm.Length; i++)
             {
@@ -170,12 +217,11 @@ public class MenteColmenaController: MonoBehaviour
         }
     }
 
-    private void tripleAttack(GameObject newUnit)
+    private void tripleAttack()
     {
         groupAttackCounter++;
         if (unitsLeftToSpawn == 0)
         {
-            //Debug.Log("Lanzo ataque");
             setSwarmToAttack(GameObject.FindGameObjectsWithTag("EnemyUnit"));
         }
         else if (groupAttackCounter >= groupAttackNum)
@@ -192,5 +238,15 @@ public class MenteColmenaController: MonoBehaviour
             swarm[i].GetComponent<EnemyController>().changeState(1);
             swarm[i].GetComponent<EnemyController>().setTargetAndAttack(findNearestPlayerUnit(swarm[i]));
         }
+    }
+
+    public void setFirstCycle()
+    {
+        startFirstCycle = true;
+    }
+
+    private GameObject getSpawnPoint()
+    {
+        return spawnPoints[Random.Range(0, spawnPoints.Length)];
     }
 }

@@ -15,6 +15,7 @@ public class CombatController : MonoBehaviour
     public bool isPlayerUnit;
     private float attackCooldown;
     public bool isBeingDeployed;
+    public bool isSpaceship;
 
     [Header("UI")]
     public Canvas healthCanvas;
@@ -37,7 +38,25 @@ public class CombatController : MonoBehaviour
         if (currentHP <= 0)
         {
             resetColor();
-            Destroy(gameObject);
+            healthCanvas.enabled = false;
+            if (isSpaceship)
+            {
+                if (!GetComponent<Spaceship_C>().getGameHasFinished())
+                {
+                    GetComponent<Spaceship_C>().startEndGameSequence();
+                }
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }else if(currentHP == startHP)
+        {
+            healthCanvas.enabled = false;
+        }
+        else
+        {
+            healthCanvas.enabled = true;
         }
 
         if (attackCooldown <= attackSpeed)
@@ -64,7 +83,7 @@ public class CombatController : MonoBehaviour
             attackCooldown = 0;
             if (!isPlayerUnit)
             {
-                this.GetComponent<EnemyController>().currentState = 1;
+                GetComponent<EnemyController>().currentState = 1;
             }
             else
             {
@@ -78,14 +97,13 @@ public class CombatController : MonoBehaviour
     public void receiveDmg(int dmg)
     {
         currentHP -= dmg;
-        healthCanvas.enabled = true;
         healthBar.fillAmount = currentHP / (float)startHP;
-        this.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
-        Invoke("resetColor", 0.3f);
+        GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
+        Invoke(nameof(resetColor), 0.3f);
     }
 
     private void resetColor()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
     }
 }

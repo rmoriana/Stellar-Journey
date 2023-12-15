@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UnitDeployment : MonoBehaviour
 {
     private const int DEFAULT = 0;
-    private const int HIGHLIGHT = 1;
     private const int PRESSED = 2;
     private const int DISABLED = 3;
 
@@ -21,6 +20,7 @@ public class UnitDeployment : MonoBehaviour
     private string unitName;
     private int numSelectedTroops;
     private int lastUnitType;
+
     private void Start()
     {
         numSelectedTroops = GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getNumSelectedTroops();
@@ -114,8 +114,8 @@ public class UnitDeployment : MonoBehaviour
             Collider2D hit = Physics2D.OverlapPoint(mouseWorldPos, layerMask);
             if (hit != null)
             {
-                Debug.Log(hit.GetComponent<CompositeCollider2D>().tag);
-                if (hit.GetComponent<CompositeCollider2D>().tag == "Suelo")
+                //Debug.Log(hit.GetComponent<CompositeCollider2D>().tag);
+                if (hit.GetComponent<CompositeCollider2D>().CompareTag("Suelo"))
                 {
                     if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
                     {

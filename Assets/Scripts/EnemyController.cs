@@ -4,7 +4,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour
 {
-
     private const int IDLE = 0;
     private const int MOVING_TO_TARGET = 1;
     private const int ATTACKING = 2;
@@ -13,6 +12,7 @@ public class EnemyController : MonoBehaviour
     public NavMeshAgent agent;
     public GameObject currentTarget;
     public GameObject menteColmena;
+    public GameObject spaceship;
 
     [Header("Movimiento IDLE")]
     public float minIdleMoveTime;
@@ -20,22 +20,42 @@ public class EnemyController : MonoBehaviour
     private float currentIdleMoveTime;
     public float minDistance;
     public float maxDistance;
-    private float idleMoveTimer;
-
+    public float moveDistanceWhenSpawns;
+    public float maxTimeSpawning;
+    public float timeSpawning;
+    public float idleMoveTimer;
+    public Vector2 finishSpawnPosition;
 
     void Start()
     {
         currentIdleMoveTime = Random.Range(minIdleMoveTime, maxIdleMoveTime);
+        GetComponent<NavMeshAgent>().updateRotation = false;
+        GetComponent<NavMeshAgent>().updateUpAxis = false;
+        finishSpawnPosition = new Vector2(transform.position.x, transform.position.y - moveDistanceWhenSpawns);
+        agent.SetDestination(finishSpawnPosition);
+        timeSpawning = 0;
     }
     // Update is called once per frame
     void Update()
     {
+        //Está saliendo de la cueva
         if (GetComponent<CombatController>().isBeingDeployed)
         {
-            return;
+            timeSpawning += Time.deltaTime;
+            Debug.Log(Vector2.Distance(transform.position, finishSpawnPosition));
+            if (Vector2.Distance(transform.position, finishSpawnPosition) < 0.1f || timeSpawning >= maxTimeSpawning)
+            {
+                GetComponent<CombatController>().isBeingDeployed = false;
+                if(currentState == IDLE)
+                {
+                    move();
+                }
+            }
         }
-
-        stateMachine();
+        else
+        {
+            stateMachine();
+        }
     }
 
     private void stateMachine()
@@ -45,8 +65,6 @@ public class EnemyController : MonoBehaviour
             case IDLE:
                 if (idleMoveTimer >= currentIdleMoveTime)
                 {
-                    agent.isStopped = true;
-                    idleMoveTimer = 0;
                     move();
                 }
                 else
@@ -92,16 +110,17 @@ public class EnemyController : MonoBehaviour
     //Recibe un objetivo
     public void setTarget(GameObject target)
     {
-        if (target != null)
+        if (target != null && !spaceship.GetComponent<Spaceship_C>().getGameHasFinished())
         {
             currentTarget = target;
+            currentState = MOVING_TO_TARGET;
         }
     }
 
     //Recibe un objetivo y la orden de atacarle immediatamente
     public void setTargetAndAttack(GameObject target)
     {
-        if (target != null)
+        if (target != null && !spaceship.GetComponent<Spaceship_C>().getGameHasFinished())
         {
             currentTarget = target;
             currentState = MOVING_TO_TARGET;
@@ -120,8 +139,8 @@ public class EnemyController : MonoBehaviour
         currentTarget = menteColmena.GetComponent<MenteColmenaController>().findNearestPlayerUnit(gameObject);
         if (currentTarget == null) //La única unidad es la nave por lo que ataca a la nave
         {
-            currentTarget = GameObject.Find("Spaceship_P");
-            if (currentTarget == null)
+            currentTarget = spaceship;
+            if (currentTarget == null || spaceship.GetComponent<Spaceship_C>().getGameHasFinished())
             {
                 currentState = IDLE;
             }
@@ -139,10 +158,12 @@ public class EnemyController : MonoBehaviour
     //Se mueve a una posición cercana
     private void move()
     {
+        agent.isStopped = true;
         agent.isStopped = false;
+        idleMoveTimer = 0;
         int contadorAux = 0;
         bool spotFound = false;
-        float moveDistance = 0;
+        float moveDistance;
         Vector2 possiblePos = transform.position;
         int layerMask = 1 << LayerMask.NameToLayer("Pared"); //Así detecta solo esta capa
         while (!spotFound && contadorAux < 20)
@@ -159,7 +180,6 @@ public class EnemyController : MonoBehaviour
 
             contadorAux++; //Para evitar el bucle infinito
         }
-
         agent.SetDestination(possiblePos);
     }
 }

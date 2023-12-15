@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BulletController : MonoBehaviour
 {
@@ -9,11 +10,6 @@ public class BulletController : MonoBehaviour
     public float acceleration;
     private GameObject target;
     private int dmg;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -24,8 +20,8 @@ public class BulletController : MonoBehaviour
         }
         else
         {
-            speed += Time.deltaTime * acceleration;
-            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed);
+            speed += acceleration*2;
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             if (Vector2.Distance(transform.position, target.transform.position) <= 0.1f)
             {
                 target.GetComponent<CombatController>().receiveDmg(dmg);
@@ -37,6 +33,7 @@ public class BulletController : MonoBehaviour
     public void setTarget(GameObject target)
     {
         this.target = target;
+        
     }
 
     public void setDmg(int dmg)
