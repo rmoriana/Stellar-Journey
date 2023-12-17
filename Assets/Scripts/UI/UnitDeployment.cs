@@ -29,7 +29,7 @@ public class UnitDeployment : MonoBehaviour
 
         for(int i = 3; i >= numSelectedTroops; i--)
         {
-            troopBtns[i].GetComponent<Image>().sprite = troopBtnsSprites[3];
+            troopBtns[i].GetComponent<Image>().sprite = troopBtnsSprites[DISABLED];
         }
 
         lastUnitType = -1;

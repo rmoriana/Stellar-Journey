@@ -28,16 +28,16 @@ public class CameraMovement : MonoBehaviour
 
         if(remainingDistance > 0)
         {
-            freeFlightCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize += zoomSpeed;
-            remainingDistance -= zoomSpeed;
+            freeFlightCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize += zoomSpeed * Time.deltaTime;
+            remainingDistance -= zoomSpeed * Time.deltaTime;
         }
          else if(remainingDistance < 0)
         {
-            freeFlightCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize -= zoomSpeed;
-            remainingDistance += zoomSpeed;
+            freeFlightCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize -= zoomSpeed * Time.deltaTime;
+            remainingDistance += zoomSpeed * Time.deltaTime;
         }
 
-        if(Mathf.Abs(remainingDistance) < zoomSpeed)
+        if(Mathf.Abs(remainingDistance) < zoomSpeed * Time.deltaTime)
         {
             remainingDistance = 0;
         }
@@ -78,7 +78,7 @@ public class CameraMovement : MonoBehaviour
             movementVector.x = -1;
         }
 
-        transform.Translate(movementVector * cameraSpeed);
+        transform.Translate(movementVector * (cameraSpeed * Time.deltaTime));
 
     }
 

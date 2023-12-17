@@ -42,7 +42,6 @@ public class EnemyController : MonoBehaviour
         if (GetComponent<CombatController>().isBeingDeployed)
         {
             timeSpawning += Time.deltaTime;
-            Debug.Log(Vector2.Distance(transform.position, finishSpawnPosition));
             if (Vector2.Distance(transform.position, finishSpawnPosition) < 0.1f || timeSpawning >= maxTimeSpawning)
             {
                 GetComponent<CombatController>().isBeingDeployed = false;

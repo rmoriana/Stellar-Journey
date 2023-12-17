@@ -21,8 +21,13 @@ public class CombatController : MonoBehaviour
     public Canvas healthCanvas;
     public Image healthBar;
 
+    private float resetColorTime;
+    private float resetColorTimer;
+    private bool colorChanged;
+
     private void Start()
     {
+        resetColorTime = 0.3f;
         currentHP = startHP;
         healthCanvas.enabled = false;
     }
@@ -37,7 +42,7 @@ public class CombatController : MonoBehaviour
 
         if (currentHP <= 0)
         {
-            resetColor();
+            GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
             healthCanvas.enabled = false;
             if (isSpaceship)
             {
@@ -62,6 +67,15 @@ public class CombatController : MonoBehaviour
         if (attackCooldown <= attackSpeed)
         {
             attackCooldown += Time.deltaTime;
+        }
+
+        if (colorChanged)
+        {
+            resetColorTimer += Time.deltaTime;
+            if(resetColorTimer > resetColorTime)
+            {
+                GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            }
         }
     }
 
@@ -98,12 +112,8 @@ public class CombatController : MonoBehaviour
     {
         currentHP -= dmg;
         healthBar.fillAmount = currentHP / (float)startHP;
-        GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
-        Invoke(nameof(resetColor), 0.3f);
-    }
-
-    private void resetColor()
-    {
-        GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+        colorChanged = true;
+        resetColorTimer = 0;
     }
 }

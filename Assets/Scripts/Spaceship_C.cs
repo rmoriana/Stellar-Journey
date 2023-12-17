@@ -1,11 +1,7 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Spaceship_C : MonoBehaviour
 {
@@ -13,7 +9,7 @@ public class Spaceship_C : MonoBehaviour
     public int startEnergyAmount;
     public int maxEnergyAmount;
     public int mineralAmount;
-    public int energyGainSpeed;
+    public float energyGainSpeed;
     public int minerEnergyReq;
     public int defenderEnergyReq;
     public int numSelectedTroops;

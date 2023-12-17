@@ -20,7 +20,7 @@ public class BulletController : MonoBehaviour
         }
         else
         {
-            speed += acceleration*2;
+            speed += acceleration*2*Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             if (Vector2.Distance(transform.position, target.transform.position) <= 0.1f)
             {

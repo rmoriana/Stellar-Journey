@@ -64,7 +64,7 @@ public class DefenderController : MonoBehaviour
     {
         int layerMask = 1 << LayerMask.NameToLayer("Pared"); //Así detecta solo esta capa
         RaycastHit2D hit = Physics2D.Linecast(transform.position, target.transform.position, layerMask);
-        Debug.DrawLine(transform.position, target.transform.position, Color.red);
+        //Debug.DrawLine(transform.position, target.transform.position, Color.blue);
         if (hit != false && hit.distance < Vector2.Distance(transform.position, target.transform.position))
         {
             return false;

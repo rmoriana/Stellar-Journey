@@ -7,7 +7,7 @@ public class MenteColmenaController: MonoBehaviour
     private float currentEnergy;
     public float baseEnergy;
     public float cycleTime;
-    public float currentEnergyMultiplier;
+    private float currentEnergyMultiplier;
     public float energyMultiplierFactor;
     private float cycleTimer;
     public float timeBetweenCycle;
@@ -69,15 +69,13 @@ public class MenteColmenaController: MonoBehaviour
                 if(timeBetweenCycleTimer >= timeBetweenCycle)
                 {
                     peaceBetweenCycle = false;
-                    currentEnergyMultiplier += energyMultiplierFactor;
                     getEnergy();
                     setSpawnStrategy();
                     cycleTimer = 0;
                     timeBetweenCycleTimer = 0;
                 }
             }
-
-            if (!peaceBetweenCycle)
+            else
             {
                 spawnTimer += Time.deltaTime;
                 if (spawnTimer >= currentSpawnInterval)
@@ -92,6 +90,7 @@ public class MenteColmenaController: MonoBehaviour
     //Obtiene la energía de la siguiente franja de tiempo
     private void getEnergy()
     {
+        currentEnergyMultiplier += energyMultiplierFactor;
         currentEnergy += baseEnergy * currentEnergyMultiplier;
     }
 
@@ -163,7 +162,7 @@ public class MenteColmenaController: MonoBehaviour
             float distance = 9999;
             for (int i = 0; i < playerUnits.Length; i++)
             {
-                if (NavMesh.CalculatePath(asker.transform.position, playerUnits[i].transform.position, NavMesh.AllAreas, path))
+                if (!playerUnits[i].GetComponent<CombatController>().isBeingDeployed && NavMesh.CalculatePath(asker.transform.position, playerUnits[i].transform.position, NavMesh.AllAreas, path))
                 {
                     if (path.status == NavMeshPathStatus.PathComplete)
                     {
