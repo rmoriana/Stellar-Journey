@@ -385,6 +385,8 @@ MonoBehaviour:
   despegueBtnSprites:
   - {fileID: -140168804404071516, guid: 3a78d661cc43a694e89ff00fee9870fb, type: 3}
   - {fileID: 6678197927507025414, guid: 3a78d661cc43a694e89ff00fee9870fb, type: 3}
+  leftRocket: {fileID: 207502514611625698}
+  rightRocket: {fileID: 5052336190975013973}
 --- !u!1 &1677395771903497983
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,6 +2315,7 @@ MonoBehaviour:
   - {fileID: -8083294799718966991, guid: aeb0bf6791e00a1449f6759a374d4145, type: 3}
   - {fileID: 328811322544241529, guid: aeb0bf6791e00a1449f6759a374d4145, type: 3}
   - {fileID: 7266809048929441338, guid: aeb0bf6791e00a1449f6759a374d4145, type: 3}
+  mainCamera: {fileID: 0}
 --- !u!1 &7569627111379120083
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,7 +2618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5509370626223493315
 RectTransform:
   m_ObjectHideFlags: 0

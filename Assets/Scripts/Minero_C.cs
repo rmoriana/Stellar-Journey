@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Minero_C : MonoBehaviour
 {
-
     private const int IDLE = 0;
     private const int MOVING_TO_TARGET = 1;
     private const int MINING = 2;
@@ -28,7 +27,7 @@ public class Minero_C : MonoBehaviour
     //Inicializa algunas variables y controla que las unidades no roten
     void Start()
     {
-        spaceship = GameObject.Find("Spaceship_P");;
+        spaceship = GameObject.Find("Spaceship_P");
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -64,11 +63,11 @@ public class Minero_C : MonoBehaviour
                 {
                     if (Vector2.Distance(transform.position, targetInteractionPosition.transform.position) < 0.1f)
                     {
-                        if (currentTarget.tag == "Cristal")
+                        if (currentTarget.CompareTag("Cristal"))
                         {
                             currentState = MINING;
                         }
-                        else if (currentTarget.tag == "PlayerUnit")
+                        else if (currentTarget.CompareTag("PlayerUnit"))
                         {
                             currentState = DEPLOYING;
                         }

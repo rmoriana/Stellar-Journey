@@ -103,7 +103,6 @@ public class CombatController : MonoBehaviour
             {
                 //TODO: Cuando la unidad aliada ataca a la unidad enemiga
             }
-            CancelInvoke("resetColor");
         }
     }
 

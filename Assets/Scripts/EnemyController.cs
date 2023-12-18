@@ -106,13 +106,12 @@ public class EnemyController : MonoBehaviour
         currentState = newState;
     }
 
-    //Recibe un objetivo
+    //Recibe un objetivo pero no se dirige hacia el
     public void setTarget(GameObject target)
     {
         if (target != null && !spaceship.GetComponent<Spaceship_C>().getGameHasFinished())
         {
             currentTarget = target;
-            currentState = MOVING_TO_TARGET;
         }
     }
 

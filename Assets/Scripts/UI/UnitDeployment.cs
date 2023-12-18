@@ -11,6 +11,7 @@ public class UnitDeployment : MonoBehaviour
 
     public Button[] troopBtns;
     public Sprite[] troopBtnsSprites;
+    public GameObject mainCamera;
     private GameObject nuevaUnidad;
     private bool deployingUnit;
     private Vector3 mouseWorldPos;
@@ -20,6 +21,8 @@ public class UnitDeployment : MonoBehaviour
     private string unitName;
     private int numSelectedTroops;
     private int lastUnitType;
+    private bool cameraMovedRecently;
+    private float cameraMovedRecentlyTimer;
 
     private void Start()
     {
@@ -43,7 +46,17 @@ public class UnitDeployment : MonoBehaviour
             updateUnitPosition();
         }
 
-        keyboardListener();
+        deployKeysListener();
+
+        //Adapta la actualización de la posicion de una tropa que se está desplegando al suavizado del movimiento de la cámara
+        if (cameraMovedRecently)
+        {
+            cameraMovedRecentlyTimer += Time.deltaTime;
+            if(cameraMovedRecentlyTimer > 2)
+            {
+                cameraMovedRecently = false;
+            }
+        }
     }
 
     //Identifica la unidad que se quiere desplegar y comprueba si el jugador tiene energía suficiente
@@ -101,7 +114,7 @@ public class UnitDeployment : MonoBehaviour
     //Si se está desplegando una unidad, actualiza la posición y completa o cancela el despliegue en función del input del jugador
     private void updateUnitPosition()
     {
-        if (Input.GetAxis("Mouse X") < 0 || Input.GetAxis("Mouse X") > 0 || Input.GetAxis("Mouse Y") > 0 || Input.GetAxis("Mouse Y") < 0)
+        if (movementKeysListener() || cameraMovedRecently)
         {
             mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             nuevaUnidad.transform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0);
@@ -119,6 +132,7 @@ public class UnitDeployment : MonoBehaviour
                 {
                     if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
                     {
+                        //Se completa el despliegue de la unidad
                         GetComponent<EnergyController>().useEnergy(unitEnergyReq);
                         nuevaUnidad.GetComponent<CombatController>().isBeingDeployed = false;
                         nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
@@ -126,6 +140,7 @@ public class UnitDeployment : MonoBehaviour
                         troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
                         nuevaUnidad = null;
                         lastUnitType = -1;
+                        GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().updateEnemiesTarget();
                     }
                 }
             }
@@ -134,15 +149,20 @@ public class UnitDeployment : MonoBehaviour
         //Cancela el despliegue de unidades en curso
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            Destroy(nuevaUnidad);
-            deployingUnit = false;
-            troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
-            lastUnitType = -1;
+            cancelDeploy();
         }
     }
 
+    public void cancelDeploy()
+    {
+        Destroy(nuevaUnidad);
+        deployingUnit = false;
+        troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
+        lastUnitType = -1;
+    }
+
     //Accesos rápidos para seleccionar tropa con las teclas 1-4
-    private void keyboardListener()
+    private void deployKeysListener()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -157,6 +177,24 @@ public class UnitDeployment : MonoBehaviour
         {
             selectUnit(3);
         }
+    }
+
+    private bool movementKeysListener()
+    {
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+            cameraMovedRecently = true;
+            cameraMovedRecentlyTimer = 0;
+            return true;
+        }else if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
     }
 
     private bool checkIfEnoughEnergy(int unitType)

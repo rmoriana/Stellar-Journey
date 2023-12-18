@@ -248,4 +248,16 @@ public class MenteColmenaController: MonoBehaviour
     {
         return spawnPoints[Random.Range(0, spawnPoints.Length)];
     }
+
+    public void updateEnemiesTarget()
+    {
+        GameObject[] swarm = GameObject.FindGameObjectsWithTag("EnemyUnit");
+        if(swarm.Length > 0)
+        {
+            for (int i = 0; i < swarm.Length; i++)
+            {
+                swarm[i].GetComponent<EnemyController>().setTarget(findNearestPlayerUnit(swarm[i]));
+            }
+        }
+    }
 }
