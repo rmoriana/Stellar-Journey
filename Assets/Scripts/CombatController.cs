@@ -55,13 +55,6 @@ public class CombatController : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-        }else if(currentHP == startHP)
-        {
-            healthCanvas.enabled = false;
-        }
-        else
-        {
-            healthCanvas.enabled = true;
         }
 
         if (attackCooldown <= attackSpeed)
@@ -86,7 +79,7 @@ public class CombatController : MonoBehaviour
         {
             if (shooter)
             {
-                GameObject newBullet = Instantiate(bulletPrefab, new Vector3(transform.position.x, transform.position.y, 0), new Quaternion(0, 0, 0, 0)) as GameObject;
+                GameObject newBullet = Instantiate(bulletPrefab, new Vector3(transform.position.x, transform.position.y+0.5f, 0), new Quaternion(0, 0, 0, 0));
                 newBullet.GetComponent<BulletController>().setTarget(target);
                 newBullet.GetComponent<BulletController>().setDmg(attackDmg);
             }
@@ -101,7 +94,7 @@ public class CombatController : MonoBehaviour
             }
             else
             {
-                //TODO: Cuando la unidad aliada ataca a la unidad enemiga
+                //TODO: Cuando la unidad aliada ataca a la unidad enemiga (sin usar un proyectil)
             }
         }
     }
@@ -109,6 +102,12 @@ public class CombatController : MonoBehaviour
     //Recibe un ataque, por lo que resta la vida de la unidad y cambia el color del sprite para reflejarlo
     public void receiveDmg(int dmg)
     {
+        if(isSpaceship && GetComponent<Spaceship_C>().getGameHasFinished())
+        {
+            return;
+        }
+
+        healthCanvas.enabled = true;
         currentHP -= dmg;
         healthBar.fillAmount = currentHP / (float)startHP;
         GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);

@@ -111,6 +111,7 @@ public class Spaceship_C : MonoBehaviour
     public void startEndGameSequence()
     {
         gameHasFinished = true;
+        GetComponent<CombatController>().healthCanvas.enabled = false;
         GameObject.Find("BottomLeftPanel").GetComponent<UnitDeployment>().cancelDeploy();
         GameObject.Find("HUD").SetActive(false);
         spaceshipCamera.GetComponent<CinemachineVirtualCamera>().Priority = 2;

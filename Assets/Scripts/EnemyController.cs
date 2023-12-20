@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour
     {
         switch (currentState)
         {
-            case IDLE:
+            case IDLE:              
                 if (idleMoveTimer >= currentIdleMoveTime)
                 {
                     move();
@@ -112,6 +112,7 @@ public class EnemyController : MonoBehaviour
         if (target != null && !spaceship.GetComponent<Spaceship_C>().getGameHasFinished())
         {
             currentTarget = target;
+            agent.isStopped = true;
         }
     }
 
@@ -156,7 +157,6 @@ public class EnemyController : MonoBehaviour
     //Se mueve a una posición cercana
     private void move()
     {
-        agent.isStopped = true;
         agent.isStopped = false;
         idleMoveTimer = 0;
         int contadorAux = 0;

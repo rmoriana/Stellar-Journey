@@ -157,7 +157,10 @@ public class UnitDeployment : MonoBehaviour
     {
         Destroy(nuevaUnidad);
         deployingUnit = false;
-        troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
+        if(lastUnitType != -1)
+        {
+            troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
+        }
         lastUnitType = -1;
     }
 

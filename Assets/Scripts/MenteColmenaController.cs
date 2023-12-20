@@ -66,7 +66,7 @@ public class MenteColmenaController: MonoBehaviour
             if (peaceBetweenCycle)
             {
                 timeBetweenCycleTimer += Time.deltaTime;
-                if(timeBetweenCycleTimer >= timeBetweenCycle)
+                if(timeBetweenCycleTimer >= timeBetweenCycle && !spaceship.GetComponent<Spaceship_C>().getGameHasFinished())
                 {
                     peaceBetweenCycle = false;
                     getEnergy();
@@ -78,7 +78,7 @@ public class MenteColmenaController: MonoBehaviour
             else
             {
                 spawnTimer += Time.deltaTime;
-                if (spawnTimer >= currentSpawnInterval)
+                if (spawnTimer >= currentSpawnInterval && unitsLeftToSpawn > 0)
                 {
                     spawnUnit();
                     spawnTimer = 0;
@@ -136,6 +136,7 @@ public class MenteColmenaController: MonoBehaviour
         newUnit.GetComponent<CombatController>().isBeingDeployed = true;
 
         unitsLeftToSpawn--;
+        //Debug.Log("Quedan " + unitsLeftToSpawn +" por spawnear");
 
         switch (threadLevel)
         {
