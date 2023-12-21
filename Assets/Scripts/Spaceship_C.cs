@@ -36,6 +36,7 @@ public class Spaceship_C : MonoBehaviour
     public float landingBrake;
     public float minLandingSpeed;
     public GameObject mentecolmena;
+    private string totalGameTime;
 
     //Inicializa los recursos que tiene la nave
     void Start()
@@ -113,6 +114,7 @@ public class Spaceship_C : MonoBehaviour
         gameHasFinished = true;
         GetComponent<CombatController>().healthCanvas.enabled = false;
         GameObject.Find("BottomLeftPanel").GetComponent<UnitDeployment>().cancelDeploy();
+        totalGameTime = GameObject.Find("BottomRightPanel").GetComponent<TimeController>().getGameTime();
         GameObject.Find("HUD").SetActive(false);
         spaceshipCamera.GetComponent<CinemachineVirtualCamera>().Priority = 2;
         waitingForCamera = true;
@@ -123,6 +125,7 @@ public class Spaceship_C : MonoBehaviour
         spaceshipFlyDelay = false;
         resumeCanvas.SetActive(true);
         GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = mineralAmount.ToString();
+        GameObject.Find("TotalTimeText").GetComponent<TMP_Text>().text = totalGameTime;
     }
 
     public void goToBase()
