@@ -6119,6 +6119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameResume
       objectReference: {fileID: 0}
+    - target: {fileID: 4221346632567787919, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4484720119035874604, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
       propertyPath: m_SpriteState.m_PressedSprite
       value: 
@@ -6615,7 +6619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8405910941054253500, guid: fffbf059577107541b88bc119a9547fd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
