@@ -127,7 +127,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 374
+      y: 190
       width: 108
       height: 21
     spriteID: a32a0a2ea43fd544fad2148da86cd290
@@ -138,7 +138,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 374}
+    uvTransform: {x: 4, y: 190}
   - name: LongBtn_Frame_1
     originalName: 
     pivot: {x: 0.42857143, y: 0.8820225}
@@ -166,8 +166,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 190
+      x: 138
+      y: 4
       width: 126
       height: 176
     spriteID: fcda2a47b284ebc45a14ea17d795bfb2
@@ -178,7 +178,27 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 190}
+    uvTransform: {x: 138, y: 4}
+  - name: LongBtn_Frame_3
+    originalName: 
+    pivot: {x: 0.42857143, y: 0.89204544}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 4
+      width: 126
+      height: 176
+    spriteID: 9cc5be2d0eba3474e9f9af51c55b1098
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 272, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -212,6 +232,14 @@ ScriptedImporter:
         width: 126
         height: 176
       spriteId: fcda2a47b284ebc45a14ea17d795bfb2
+    - name: LongBtn_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 0
+        y: -157
+        width: 126
+        height: 176
+      spriteId: 9cc5be2d0eba3474e9f9af51c55b1098
     linkedCells: []
     parentIndex: -1
   platformSettings: []

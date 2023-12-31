@@ -8,7 +8,6 @@ public class Spaceship_C : MonoBehaviour
     [Header("Parámetros globales")]
     public int startEnergyAmount;
     public int maxEnergyAmount;
-    public int mineralAmount;
     public float energyGainSpeed;
     public int minerEnergyReq;
     public int defenderEnergyReq;
@@ -37,11 +36,12 @@ public class Spaceship_C : MonoBehaviour
     public float minLandingSpeed;
     public GameObject mentecolmena;
     private string totalGameTime;
+    private int levelAstralitaAmount;
 
     //Inicializa los recursos que tiene la nave
     void Start()
     {
-        mineralAmount = 0;
+        levelAstralitaAmount = 0;
         gameEnding = false;
         resumeCanvas.SetActive(false);
         hud.SetActive(false);
@@ -104,7 +104,7 @@ public class Spaceship_C : MonoBehaviour
     //Recibe una unidad de un recurso
     public void deployMineral()
     {
-        mineralAmount++;
+        levelAstralitaAmount++;
         GameObject.Find("BottomRightPanel").GetComponent<RecursosController>().addResource();
     }
 
@@ -118,13 +118,21 @@ public class Spaceship_C : MonoBehaviour
         GameObject.Find("HUD").SetActive(false);
         spaceshipCamera.GetComponent<CinemachineVirtualCamera>().Priority = 2;
         waitingForCamera = true;
+
+        //Si es su primera partida del nivel o ha conseguido más recursos guardamos la información como "mejor expedición".
+        if (levelAstralitaAmount > GameManager.levelsMaxAstralita[GameManager.currentLevel])
+        {
+            GameManager.levelsMaxAstralita[GameManager.currentLevel] = levelAstralitaAmount;
+            GameManager.levelsLongestExpedition[GameManager.currentLevel] = totalGameTime;
+        }
     }
 
     private void showLvlResume()
     {
         spaceshipFlyDelay = false;
+        GameManager.astralitaTotal += levelAstralitaAmount;
         resumeCanvas.SetActive(true);
-        GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = mineralAmount.ToString();
+        GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = levelAstralitaAmount.ToString();
         GameObject.Find("TotalTimeText").GetComponent<TMP_Text>().text = totalGameTime;
     }
 

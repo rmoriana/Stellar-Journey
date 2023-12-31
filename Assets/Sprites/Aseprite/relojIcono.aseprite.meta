@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 07a1632a99bed2d45a47bb2be942ee30
+guid: fd564e4f1bbe70d4d84e223dfa9420eb
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: baseMenuBackground
+  - name: relojIcono
     originalName: 
-    pivot: {x: 0.3846154, y: 0.17431192}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 208
-      height: 109
-    spriteID: e2b7955f06f14d4449f366347c00674e
+      width: 15
+      height: 15
+    spriteID: 8191d5f2821c5a84c887199b69cbc688
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,23 +142,23 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1726814008
-    name: baseMenuBackground
+    guid: 1086402866
+    name: relojIcono
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: baseMenuBackground
+    - name: relojIcono
       frameIndex: 0
       cellRect:
         x: 0
-        y: -19
-        width: 208
-        height: 109
-      spriteId: e2b7955f06f14d4449f366347c00674e
+        y: 0
+        width: 15
+        height: 15
+      spriteId: 8191d5f2821c5a84c887199b69cbc688
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 160, y: 90}
+  canvasSize: {x: 15, y: 15}

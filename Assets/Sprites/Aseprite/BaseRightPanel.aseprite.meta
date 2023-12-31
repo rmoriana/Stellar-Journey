@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 75b40f2c60eef744faa6dc308a1b6b1c
+guid: 7da9d0893dc3010469ee0abd5af1c205
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: BaseLeftPanel_Frame_0
+  - name: BaseRightPanel
     originalName: 
-    pivot: {x: 0.49375, y: -0.21505377}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 160
-      height: 186
-    spriteID: e13d9056a21c76a4b905132568c1cd1a
+      width: 38
+      height: 26
+    spriteID: 43f2a81fb6ea63a4e82073a8d54c7e81
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,82 +139,26 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: BaseLeftPanel_Frame_1
-    originalName: 
-    pivot: {x: 0.49375, y: -0.21505377}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 172
-      y: 4
-      width: 160
-      height: 186
-    spriteID: d33e74b4b3d21364094865607a07a998
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 172, y: 4}
-  - name: BaseLeftPanel_Frame_2
-    originalName: 
-    pivot: {x: 0.49375, y: -0.21505377}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 340
-      y: 4
-      width: 160
-      height: 186
-    spriteID: 58279f202d221de4aaa141511e33c998
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 340, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1206560272
-    name: BaseLeftPanel
+    guid: 1256961423
+    name: BaseRightPanel
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: BaseLeftPanel_Frame_0
+    - name: BaseRightPanel
       frameIndex: 0
       cellRect:
-        x: 48
-        y: 40
-        width: 160
-        height: 186
-      spriteId: e13d9056a21c76a4b905132568c1cd1a
-    - name: BaseLeftPanel_Frame_1
-      frameIndex: 1
-      cellRect:
-        x: 48
-        y: 40
-        width: 160
-        height: 186
-      spriteId: d33e74b4b3d21364094865607a07a998
-    - name: BaseLeftPanel_Frame_2
-      frameIndex: 2
-      cellRect:
-        x: 48
-        y: 40
-        width: 160
-        height: 186
-      spriteId: 58279f202d221de4aaa141511e33c998
+        x: 0
+        y: 0
+        width: 38
+        height: 26
+      spriteId: 43f2a81fb6ea63a4e82073a8d54c7e81
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 254, y: 268}
+  canvasSize: {x: 38, y: 26}
