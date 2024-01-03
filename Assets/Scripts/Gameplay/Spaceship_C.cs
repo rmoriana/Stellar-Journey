@@ -16,7 +16,6 @@ public class Spaceship_C : MonoBehaviour
     [Header("Inicio y final del nivel")]
     private bool gameStarting;
     public bool gameEnding;
-    public int cuentaAtrasMaxima;
     public GameObject spaceshipCamera;
     public GameObject mainCamera;
     public float speed;
@@ -130,10 +129,25 @@ public class Spaceship_C : MonoBehaviour
     private void showLvlResume()
     {
         spaceshipFlyDelay = false;
-        GameManager.astralitaTotal += levelAstralitaAmount;
         resumeCanvas.SetActive(true);
-        GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = levelAstralitaAmount.ToString();
         GameObject.Find("TotalTimeText").GetComponent<TMP_Text>().text = totalGameTime;
+        if(GetComponent<CombatController>().getCurrentHP() <= 0) { //Penalización por despegue forzado
+            GameObject.Find("PenaltyText").GetComponent<TMP_Text>().text = "Has perdido algunos recursos por el camino...";
+            if (!GameManager.shipUpgrades[2])
+            {
+                levelAstralitaAmount = Mathf.RoundToInt(levelAstralitaAmount * ((100 - GameManager.spaceshipDefaultLootPenalty) / 100f));
+            }
+            else
+            {
+                levelAstralitaAmount = Mathf.RoundToInt(levelAstralitaAmount * ((100 - GameManager.spaceshipImprovedLootPenalty) / 100f));
+            }
+        }
+        else
+        {
+            GameObject.Find("PenaltyText").GetComponent<TMP_Text>().text = "";
+        }
+        GameManager.astralitaTotal += levelAstralitaAmount;
+        GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = levelAstralitaAmount.ToString();
     }
 
     public void goToBase()

@@ -1595,34 +1595,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1903726346392262888, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 37
-      objectReference: {fileID: 0}
     - target: {fileID: 4221346632567787919, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
       propertyPath: m_Name
       value: GameResume
       objectReference: {fileID: 0}
-    - target: {fileID: 4221346632567787919, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4484720119035874604, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: bec0c4b6463edf749bd22375631f2d72, type: 3}
-    - target: {fileID: 4484720119035874604, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
-      propertyPath: m_SpriteState.m_HighlightedSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: aa79cfb811e692a4581db5125a31fbb6, type: 3}
-    - target: {fileID: 6215898990007544198, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
+    - target: {fileID: 4855403308578066576, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 37.000015
+      value: -57.7
       objectReference: {fileID: 0}
-    - target: {fileID: 6814496667073049536, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d8708e5d7d42e9c408d8364532acea2b, type: 3}
+    - target: {fileID: 5317004741086133668, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -106.500015
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235020695063708153, guid: 56c7e7ed6c7f20041abe3d29ad85a03d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -22.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

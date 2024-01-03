@@ -32,7 +32,7 @@ public class BulletController : MonoBehaviour
         
         movementX = speed * vectorDirector.x;
         movementY = speed * vectorDirector.y;
-        transform.position = new Vector2(transform.position.x + movementX, transform.position.y + movementY);
+        transform.position = new Vector2(transform.position.x + movementX * Time.deltaTime, transform.position.y + movementY * Time.deltaTime);
         timeAlive += Time.deltaTime;
 
         if(timeAlive > maxTimeAlive)

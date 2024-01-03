@@ -28,6 +28,17 @@ public class CombatController : MonoBehaviour
     private void Start()
     {
         resetColorTime = 0.3f;
+        if (isSpaceship)
+        {
+            if (GameManager.shipUpgrades[0]) //Si la mejora de vida está activada
+            {
+                startHP = GameManager.spaceshipImprovedHP;
+            }
+            else
+            {
+                startHP = GameManager.spaceshipDefaultHP;
+            }
+        }
         currentHP = startHP;
         healthCanvas.enabled = false;
     }
@@ -113,5 +124,10 @@ public class CombatController : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
         colorChanged = true;
         resetColorTimer = 0;
+    }
+
+    public int getCurrentHP()
+    {
+        return currentHP;
     }
 }

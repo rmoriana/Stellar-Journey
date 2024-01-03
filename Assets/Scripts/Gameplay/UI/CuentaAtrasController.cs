@@ -21,7 +21,14 @@ public class CuentaAtrasController : MonoBehaviour
 
     private void Start()
     {
-        cuentaAtrasMaxima = spaceship.GetComponent<Spaceship_C>().cuentaAtrasMaxima;
+        if (GameManager.shipUpgrades[1]) //Si la mejora de despegue está activada
+        {
+            cuentaAtrasMaxima = GameManager.spaceshipImprovedLaunchTime;
+        }
+        else
+        {
+            cuentaAtrasMaxima = GameManager.spaceshipDefaultLaunchTime;
+        }
         cuentaAtrasActual = cuentaAtrasMaxima;
         infoTxt.text = "";
         tiempoRestanteTxt.text = "";

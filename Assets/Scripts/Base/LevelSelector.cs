@@ -71,8 +71,9 @@ public class LevelSelector : MonoBehaviour
         }
 
         titleText.text = GameManager.levelsNames[planetId];
+        descriptionText.text = "Recursos disponibles:";
 
-        if(buttonCallBack != null)
+        if (buttonCallBack != null)
         {
             startGameBtn.GetComponent<Button>().onClick.RemoveListener(buttonCallBack);
         }
@@ -89,8 +90,9 @@ public class LevelSelector : MonoBehaviour
 
         titleText.text = GameManager.levelsNames[planetId];
         costeAstralitaTxt.text = GameManager.astralitaUnlockCost[planetId].ToString();
+        descriptionText.text = "Recursos disponibles:";
 
-        if(GameManager.astralitaTotal >= GameManager.astralitaUnlockCost[planetId])
+        if (GameManager.astralitaTotal >= GameManager.astralitaUnlockCost[planetId])
         {
             unlockBtn.GetComponent<Button>().interactable = true;
             if (buttonCallBack != null)
