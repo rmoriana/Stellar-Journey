@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static int spaceshipImprovedLaunchTime = 6; //Tiempo de despegue mejorado
     public static int spaceshipDefaultLootPenalty = 40; //Penalización estándar por despegue forzado
     public static int spaceshipImprovedLootPenalty = 10; //Penalización reducida por despegue forzado
-    public static int astralitaTotal = 0; //Astralita total de la que dispone el jugador en la partida
+    public static int astralitaTotal = 20; //Astralita total de la que dispone el jugador en la partida
     public static int numLevels = 2; //Niveles en el juego
     public static bool[] levelsState = new bool[numLevels]; //Estado de cada nivel (Bloqueado o Desbloqueado)
     public static int[] levelsMaxAstralita = new int[numLevels]; //Astralita máxima que se ha conseguido en cada nivel

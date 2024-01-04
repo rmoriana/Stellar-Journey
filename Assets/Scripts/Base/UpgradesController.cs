@@ -6,7 +6,6 @@ public class UpgradesController : MonoBehaviour
 {
     public TMP_Text titleTxt;
     public TMP_Text descriptionTxt;
-    public TMP_Text costDescriptionTxt;
     public GameObject tipoRecursoImg;
     public TMP_Text costTxt;
     public GameObject activateBtn;
@@ -65,7 +64,6 @@ public class UpgradesController : MonoBehaviour
         titleTxt.text = GameManager.shipUpgradesTitle[upgradeId];
         descriptionTxt.text = GameManager.shipUpgradesDescription[upgradeId];
         costTxt.text = GameManager.shipUpgradesCost[upgradeId].ToString();
-        costDescriptionTxt.text = "Coste:";
         tipoRecursoImg.SetActive(true);
 
         if (buttonCallBack != null)
@@ -103,10 +101,13 @@ public class UpgradesController : MonoBehaviour
 
     public void sellUpgrade(int upgradeId)
     {
-        GameManager.astralitaTotal += GameManager.shipUpgradesCost[upgradeId];
-        GetComponent<BaseResourcesPanel>().updateAstralitaText();
-        GameManager.shipUpgrades[upgradeId] = false;
-        onClickSelectUpgrade(upgradeId);
+        if (checkDeactivateRequirements(upgradeId))
+        {
+            GameManager.astralitaTotal += GameManager.shipUpgradesCost[upgradeId];
+            GetComponent<BaseResourcesPanel>().updateAstralitaText();
+            GameManager.shipUpgrades[upgradeId] = false;
+            onClickSelectUpgrade(upgradeId);
+        }
     }
 
     private void updateUpgradesBtnsAndLines()
@@ -147,13 +148,23 @@ public class UpgradesController : MonoBehaviour
         }
     }
 
+    private bool checkDeactivateRequirements(int upgradeId)
+    {
+        switch (upgradeId)
+        {
+            case 0:
+                if (GameManager.shipUpgrades[1] || GameManager.shipUpgrades[2]) return false;
+                return true;
+            default: return true; //Si no llega una mejora con restricciones asumimos que se puede desactivar
+        }
+    }
+
     public void rootUpgrade()
     {
         updateUpgradesBtnsAndLines();
         upgradesInfoPanel.SetActive(true);
         titleTxt.text = "Nave Espacial";
         descriptionTxt.text = "Mejoras relacionadas con el funcionamiento de la nave";
-        costDescriptionTxt.text = "";
         costTxt.text = "";
         tipoRecursoImg.SetActive(false);
         activateBtn.SetActive(false);
@@ -161,5 +172,4 @@ public class UpgradesController : MonoBehaviour
         rootShipBtn.transform.localScale = new Vector2(1.25f, 1.25f);
         scaleSelectedUpgrade(-1);
     }
-
 }
