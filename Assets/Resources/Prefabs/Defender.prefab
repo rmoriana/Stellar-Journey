@@ -111,6 +111,7 @@ MonoBehaviour:
   isSpaceship: 0
   healthCanvas: {fileID: 480288652361518304}
   healthBar: {fileID: 7619762076644109797}
+  mentecolmena: {fileID: 7347581353537869206, guid: 0f32ad9ed7b698042b1ae8aac572dd0a, type: 3}
 --- !u!195 &2877118407145646501
 NavMeshAgent:
   m_ObjectHideFlags: 0

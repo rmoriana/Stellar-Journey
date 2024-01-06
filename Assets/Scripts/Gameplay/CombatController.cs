@@ -64,6 +64,10 @@ public class CombatController : MonoBehaviour
             }
             else
             {
+                if(isPlayerUnit)
+                {
+                    GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().addUnitKilled();
+                }
                 Destroy(gameObject);
             }
         }

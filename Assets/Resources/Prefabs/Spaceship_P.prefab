@@ -192,15 +192,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fbf43c12d2ffc54ca690820cf29174a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startEnergyAmount: 15
+  startEnergyAmount: 10
   maxEnergyAmount: 30
-  mineralAmount: 0
-  energyGainSpeed: 2
+  energyGainSpeed: 1.5
   minerEnergyReq: 5
   defenderEnergyReq: 8
   numSelectedTroops: 2
   gameEnding: 0
-  cuentaAtrasMaxima: 10
   spaceshipCamera: {fileID: 0}
   mainCamera: {fileID: 0}
   speed: 0.1
@@ -210,10 +208,12 @@ MonoBehaviour:
   hud: {fileID: 0}
   startingGameY: 6
   finishLandingY: -5
-  landingSpeed: 7.5
+  landingSpeed: 8
   landingBrake: 3
   minLandingSpeed: 0.5
   mentecolmena: {fileID: 0}
+  FadeInOutImg: {fileID: 0}
+  waitingFadeToGo: 0
 --- !u!114 &3457522956845613859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e409530b9d206c4408c176c8a0114e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHP: 200
+  startHP: 500
   attackDmg: 0
   attackSpeed: 0
   attackRange: 0

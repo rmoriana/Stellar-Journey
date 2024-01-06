@@ -44,9 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 691e2af65f8e49e42ab0588ed4db970e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentEnergy: 0
-  updateEnergyGenerationTime: 10
-  currentEnergyMultiplier: 0.6
+  baseEnergy: 30
+  cycleTime: 30
   energyMultiplierFactor: 0.2
+  timeBetweenCycle: 10
   desertScarabCost: 2
-  threadLevel: 2
+  threatLevel: 0
+  lastCyclePlayerUnitsKilled: 0
+  spaceship: {fileID: 0}
+  peaceTime: 5
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}

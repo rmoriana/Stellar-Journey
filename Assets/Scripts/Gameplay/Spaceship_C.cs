@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
@@ -37,6 +39,9 @@ public class Spaceship_C : MonoBehaviour
     private string totalGameTime;
     private int levelAstralitaAmount;
 
+    public GameObject FadeInOutImg;
+    private Task task;
+
     //Inicializa los recursos que tiene la nave
     void Start()
     {
@@ -46,6 +51,8 @@ public class Spaceship_C : MonoBehaviour
         hud.SetActive(false);
         transform.position = new Vector2(transform.position.x, startingGameY);
         gameStarting = true;
+        FadeInOutImg.SetActive(true);
+        StartCoroutine(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(false));
     }
 
     private void Update()
@@ -67,7 +74,7 @@ public class Spaceship_C : MonoBehaviour
             if (transform.position.y >= spaceshipUpLimit)
             {
                 spaceshipCamera.GetComponent<CinemachineVirtualCamera>().Follow = null;
-                Invoke("showLvlResume", 1);
+                Invoke("showLvlResume", 1); //Delay para que a la nave le de tiempo a volar un poco más y salir de la pantalla
                 endSequencePhase2 = false;
                 spaceshipFlyDelay = true;
             }
@@ -98,6 +105,11 @@ public class Spaceship_C : MonoBehaviour
                 transform.position = new Vector2(transform.position.x, transform.position.y - (landingSpeed * Time.deltaTime));
             }           
         }
+
+        if (task != null && !task.Running)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 
     //Recibe una unidad de un recurso
@@ -117,13 +129,6 @@ public class Spaceship_C : MonoBehaviour
         GameObject.Find("HUD").SetActive(false);
         spaceshipCamera.GetComponent<CinemachineVirtualCamera>().Priority = 2;
         waitingForCamera = true;
-
-        //Si es su primera partida del nivel o ha conseguido más recursos guardamos la información como "mejor expedición".
-        if (levelAstralitaAmount > GameManager.levelsMaxAstralita[GameManager.currentLevel])
-        {
-            GameManager.levelsMaxAstralita[GameManager.currentLevel] = levelAstralitaAmount;
-            GameManager.levelsLongestExpedition[GameManager.currentLevel] = totalGameTime;
-        }
     }
 
     private void showLvlResume()
@@ -148,16 +153,20 @@ public class Spaceship_C : MonoBehaviour
         }
         GameManager.astralitaTotal += levelAstralitaAmount;
         GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = levelAstralitaAmount.ToString();
+
+        //Si es su primera partida del nivel o ha conseguido más recursos guardamos la información como "mejor expedición".
+        if (levelAstralitaAmount > GameManager.levelsMaxAstralita[GameManager.currentLevel])
+        {
+            GameManager.levelsMaxAstralita[GameManager.currentLevel] = levelAstralitaAmount;
+            GameManager.levelsLongestExpedition[GameManager.currentLevel] = totalGameTime;
+        }
     }
 
     public void goToBase()
     {
-        Invoke("changeScene", 0.2f);
-    }
-
-    private void changeScene()
-    {
-        SceneManager.LoadScene("Base");
+        GameManager.sceneToLoad = 2;
+        FadeInOutImg.SetActive(true);
+        task = new Task(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(true));
     }
 
     private bool checkIfCameraIsIdle()

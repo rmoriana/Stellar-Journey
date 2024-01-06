@@ -1,8 +1,14 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class MenteColmenaController: MonoBehaviour
 {
+    private const int KEEP = 0;
+    private const int REDUCE = -1;
+    private const int REDUCE_DOUBLE = -2;
+    private const int INCREASE = 1;
+
     [Header("Gestión de la energía")]
     private float currentEnergy;
     public float baseEnergy;
@@ -22,9 +28,12 @@ public class MenteColmenaController: MonoBehaviour
     private int unitsLeftToSpawn;
 
     [Header("Amenaza")]
-    public int threadLevel;
+    public int threatLevel;
     private int groupAttackNum;
     private int groupAttackCounter;
+    private int totalCycles;
+    private int angerLvl;
+    public int lastCyclePlayerUnitsKilled;
 
     public GameObject spaceship;
     public float peaceTime;
@@ -92,33 +101,62 @@ public class MenteColmenaController: MonoBehaviour
     {
         currentEnergyMultiplier += energyMultiplierFactor;
         currentEnergy += baseEnergy * currentEnergyMultiplier;
+        if(!startFirstCycle)
+        {
+            totalCycles++;
+            updateAngerLevel();
+        }
     }
 
     //Calcular las unidades que va a invocar en la siguiente franja de tiempo
     private void setSpawnStrategy()
     {
-        //Lógica simple y temporal del nivel de amenaza
-        if (threadLevel == 0)
+        if (startFirstCycle)
         {
-            threadLevel = 1;
-        }
-        else if (threadLevel == 1)
-        {
-            threadLevel = 2;
+            threatLevel = 0;
         }
         else
         {
-            threadLevel = 0;
+            switch (getNewThreatLevel())
+            {
+                case REDUCE: //Reducir el nivel de amenaza
+                    if (threatLevel > 0)
+                    {
+                        threatLevel--;
+                    }
+                    break;
+                case INCREASE: //Aumentar el nivel de amenaza
+                    if (threatLevel < 2)
+                    {
+                        threatLevel++;
+                    }
+                    break;
+                case REDUCE_DOUBLE:
+                    if(threatLevel == 2)
+                    {
+                        threatLevel -= 2;
+                    }
+                    else if(threatLevel > 0)
+                    {
+                        threatLevel--;
+                    }
+                    break;
+                default: threatLevel = KEEP; break;
+            }
         }
+
+        lastCyclePlayerUnitsKilled = 0;
 
         unitsLeftToSpawn = Mathf.RoundToInt(currentEnergy / desertScarabCost); //Calcula cuantas unidades puede generar con la energía que tiene
         currentSpawnInterval = (cycleTime * 0.9f) / ((float)unitsLeftToSpawn); //Calcula cada cuanto tiene que generar una unidad para que le de tiempo antes del cambio de intervalo
         currentEnergy -= desertScarabCost * unitsLeftToSpawn; //Resta la energía de todas las unidades que va a generar en este intervalo
-        //Debug.Log("Nuevo ciclo");
-        //Debug.Log("Saldran " + unitsLeftToSpawn + " unidades, una cada " + currentSpawnInterval + " segundos");
+        Debug.Log("Nuevo ciclo: Es el número " + totalCycles);
+        Debug.Log("Saldran " + unitsLeftToSpawn + " unidades, una cada " + currentSpawnInterval + " segundos");
+        Debug.Log("El nivel ira es: " + angerLvl);
+        Debug.Log("El nivel de amenaza es: " + threatLevel);
         //Setea las variables para dividir la fase en tres ataques
         groupAttackCounter = 0;
-        if (threadLevel == 1)
+        if (threatLevel == 1)
         {
             groupAttackNum = Mathf.RoundToInt(unitsLeftToSpawn / 3);
         }
@@ -138,7 +176,7 @@ public class MenteColmenaController: MonoBehaviour
         unitsLeftToSpawn--;
         //Debug.Log("Quedan " + unitsLeftToSpawn +" por spawnear");
 
-        switch (threadLevel)
+        switch (threatLevel)
         {
             case 0:
                 spawnAndAttack(newUnit);
@@ -247,7 +285,7 @@ public class MenteColmenaController: MonoBehaviour
 
     private GameObject getSpawnPoint()
     {
-        return spawnPoints[Random.Range(0, spawnPoints.Length)];
+        return spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
     }
 
     public void updateEnemiesTarget()
@@ -260,5 +298,50 @@ public class MenteColmenaController: MonoBehaviour
                 swarm[i].GetComponent<EnemyController>().setTarget(findNearestPlayerUnit(swarm[i]));
             }
         }
+    }
+
+    public void addUnitKilled()
+    {
+        lastCyclePlayerUnitsKilled++;
+    }
+
+    private int getNewThreatLevel()
+    {
+        //En cualquier fase de la partida, si no se ha destruido ninguna unidad del jugador la amenaza debe aumentar.
+        Debug.Log("En este ciclo han muerto "+ lastCyclePlayerUnitsKilled + " unidades del jugador");
+        if (lastCyclePlayerUnitsKilled == 0) 
+        {
+            return INCREASE;
+        }
+
+        //En cualquier fase de la partida, si pasado el tiempo entre ciclos quedan unidades enemigas vivas, la amenaza se debe reducir
+        if(GameObject.FindGameObjectsWithTag("EnemyUnit").Length > 0)
+        {
+            return REDUCE;
+        }
+
+        switch (angerLvl)
+        {
+            case 0: //Fase 1: Si ha matado 1 unidad se mantiene y si ha matado más de 1 se reduce
+                if (lastCyclePlayerUnitsKilled == 1) return REDUCE;
+                else return REDUCE_DOUBLE;
+            case 1: //Fase 2: Si ha matado 1 unidad aumenta la amenaza, si ha matado 2 se mantiene y si ha matado 3 o más se reduce
+                if (lastCyclePlayerUnitsKilled == 1) return KEEP;
+                else if (lastCyclePlayerUnitsKilled <= 2) return REDUCE;
+                else return REDUCE_DOUBLE;
+            case 2: //Fase 3: Si ha matado menos de 3 unidades aumenta la amenaza, si ha matado entre 3 y 6 se mantiene y si ha matado más de 6 se reduce
+                if (lastCyclePlayerUnitsKilled == 1) return INCREASE;
+                else if (lastCyclePlayerUnitsKilled <= 2) return KEEP;
+                else if (lastCyclePlayerUnitsKilled <= 4) return REDUCE;
+                else return REDUCE_DOUBLE;
+            default: return KEEP; //Nunca debería entrar en este default pero hay que ponerlo para que siempre devuelva algo
+        }
+    }
+
+    private void updateAngerLevel()
+    {
+        if (totalCycles <= 4) angerLvl = 0;
+        else if (totalCycles <= 7) angerLvl = 1;
+        else angerLvl = 2;
     }
 }

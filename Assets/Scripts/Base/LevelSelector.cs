@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelector : MonoBehaviour
 {
-
     public TMP_Text titleText;
     public TMP_Text descriptionText;
     public GameObject astralitaAvailableImage;
@@ -20,6 +19,9 @@ public class LevelSelector : MonoBehaviour
     public GameObject[] unlockedPlanets;
     public GameObject[] planetSelectors;
     private UnityEngine.Events.UnityAction buttonCallBack;
+    private Task task;
+    private bool waitingFadeToChangeScene;
+    public GameObject FadeInOutImg;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +46,18 @@ public class LevelSelector : MonoBehaviour
         changeSelectedPlanet(-1);
         titleText.text = "";
         descriptionText.text = "";
+
+        FadeInOutImg.SetActive(true);
+        StartCoroutine(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(false));
+    }
+
+    private void Update()
+    {
+        if(waitingFadeToChangeScene && !task.Running)
+        {
+            SceneManager.LoadScene(1);
+            waitingFadeToChangeScene = false;
+        }
     }
 
     public void clickOnUnlockedPlanet(int planetId)
@@ -112,7 +126,10 @@ public class LevelSelector : MonoBehaviour
     public void startLevel(int planetId)
     {
         GameManager.currentLevel = planetId;
-        SceneManager.LoadScene("Nivel-" + planetId);
+        GameManager.sceneToLoad = planetId + 3; //El número de escena es el nivel escogido + 3;
+        waitingFadeToChangeScene = true;
+        FadeInOutImg.SetActive(true);
+        task = new Task(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(true));
     }
 
     public void unlockLevel(int planetId)

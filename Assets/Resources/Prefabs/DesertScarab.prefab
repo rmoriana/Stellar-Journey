@@ -109,8 +109,8 @@ MonoBehaviour:
   spaceship: {fileID: 0}
   minIdleMoveTime: 2
   maxIdleMoveTime: 6
-  minDistance: -0.4
-  maxDistance: 0.4
+  minDistance: -0.2
+  maxDistance: 0.2
   moveDistanceWhenSpawns: 2
   maxTimeSpawning: 2
   timeSpawning: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   isSpaceship: 0
   healthCanvas: {fileID: 8267445301667874922}
   healthBar: {fileID: 2139028893998737775}
+  mentecolmena: {fileID: 0}
 --- !u!61 &6902226151852877435
 BoxCollider2D:
   m_ObjectHideFlags: 0
