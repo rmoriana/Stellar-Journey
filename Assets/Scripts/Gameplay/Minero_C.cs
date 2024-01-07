@@ -113,7 +113,7 @@ public class Minero_C : MonoBehaviour
                     if (deployingCooldown >= deployingSpeed)
                     {
                         cargo--;
-                        currentTarget.GetComponent<Spaceship_C>().deployMineral();
+                        currentTarget.GetComponent<Spaceship_C>().deployMineral(0);
                         deployingCooldown = 0;
                     }
                     else

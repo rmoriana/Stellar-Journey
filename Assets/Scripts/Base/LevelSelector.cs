@@ -2,13 +2,16 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static System.Net.Mime.MediaTypeNames;
 
 public class LevelSelector : MonoBehaviour
 {
-    public TMP_Text titleText;
-    public TMP_Text descriptionText;
+    public GameObject titleText;
+    public GameObject descriptionText;
     public GameObject astralitaAvailableImage;
+    public GameObject uranioAvailableImage;
     public TMP_Text mejorAstralitaTxt;
+    public TMP_Text mejorUranioTxt;
     public TMP_Text mejorTiempoTxt;
     public TMP_Text costeAstralitaTxt;
     public GameObject unlockedPanel;
@@ -44,8 +47,8 @@ public class LevelSelector : MonoBehaviour
         lockedPanel.SetActive(false);
 
         changeSelectedPlanet(-1);
-        titleText.text = "";
-        descriptionText.text = "";
+        titleText.SetActive(false);
+        descriptionText.SetActive(false);
 
         FadeInOutImg.SetActive(true);
         StartCoroutine(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(false));
@@ -64,7 +67,17 @@ public class LevelSelector : MonoBehaviour
     {
         unlockedPanel.SetActive(true);
         lockedPanel.SetActive(false);
+        astralitaAvailableImage.SetActive(true);
         changeSelectedPlanet(planetId);
+
+        if (GameManager.levelsResourcesAvailable[planetId] == 1)
+        {
+            uranioAvailableImage.SetActive(true);
+        }
+        else
+        {
+            uranioAvailableImage.SetActive(false);
+        }
 
         if(GameManager.levelsMaxAstralita[planetId] == 0)
         {
@@ -73,6 +86,15 @@ public class LevelSelector : MonoBehaviour
         else
         {
             mejorAstralitaTxt.text = GameManager.levelsMaxAstralita[planetId].ToString();
+        }
+
+        if (GameManager.levelsMaxUranio[planetId] == 0)
+        {
+            mejorUranioTxt.text = "-";
+        }
+        else
+        {
+            mejorUranioTxt.text = GameManager.levelsMaxUranio[planetId].ToString();
         }
 
         if (GameManager.levelsLongestExpedition[planetId] == null)
@@ -84,8 +106,10 @@ public class LevelSelector : MonoBehaviour
             mejorTiempoTxt.text = GameManager.levelsLongestExpedition[planetId].ToString();
         }
 
-        titleText.text = GameManager.levelsNames[planetId];
-        descriptionText.text = "Recursos disponibles:";
+        titleText.SetActive(true);
+        descriptionText.SetActive(true);
+        titleText.GetComponent<TMP_Text>().text = GameManager.levelsNames[planetId];
+        descriptionText.GetComponent<TMP_Text>().text = "Recursos disponibles:";
 
         if (buttonCallBack != null)
         {
@@ -101,10 +125,22 @@ public class LevelSelector : MonoBehaviour
         unlockedPanel.SetActive(false);
         lockedPanel.SetActive(true);
         changeSelectedPlanet(planetId);
+        astralitaAvailableImage.SetActive(true);
 
-        titleText.text = GameManager.levelsNames[planetId];
+        if (GameManager.levelsResourcesAvailable[planetId] == 1)
+        {
+            uranioAvailableImage.SetActive(true);
+        }
+        else
+        {
+            uranioAvailableImage.SetActive(false);
+        }
+
+        titleText.SetActive(true);
+        descriptionText.SetActive(true);
+        titleText.GetComponent<TMP_Text>().text = GameManager.levelsNames[planetId];
+        descriptionText.GetComponent<TMP_Text>().text = "Recursos disponibles:";
         costeAstralitaTxt.text = GameManager.astralitaUnlockCost[planetId].ToString();
-        descriptionText.text = "Recursos disponibles:";
 
         if (GameManager.astralitaTotal >= GameManager.astralitaUnlockCost[planetId])
         {

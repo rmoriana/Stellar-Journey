@@ -90,10 +90,10 @@ public class UpgradesController : MonoBehaviour
 
     public void buyUpgrade(int upgradeId)
     {
-        if(checkUpgradeRequirements(upgradeId) && GameManager.astralitaTotal >= GameManager.shipUpgradesCost[upgradeId])
+        if(checkUpgradeRequirements(upgradeId) && GameManager.uranioTotal >= GameManager.shipUpgradesCost[upgradeId])
         {
-            GameManager.astralitaTotal -= GameManager.shipUpgradesCost[upgradeId];
-            GetComponent<BaseResourcesPanel>().updateAstralitaText();
+            GameManager.uranioTotal -= GameManager.shipUpgradesCost[upgradeId];
+            GetComponent<BaseResourcesPanel>().updateUranioText();
             GameManager.shipUpgrades[upgradeId] = true;
             onClickSelectUpgrade(upgradeId);
         }
@@ -103,8 +103,8 @@ public class UpgradesController : MonoBehaviour
     {
         if (checkDeactivateRequirements(upgradeId))
         {
-            GameManager.astralitaTotal += GameManager.shipUpgradesCost[upgradeId];
-            GetComponent<BaseResourcesPanel>().updateAstralitaText();
+            GameManager.uranioTotal += GameManager.shipUpgradesCost[upgradeId];
+            GetComponent<BaseResourcesPanel>().updateUranioText();
             GameManager.shipUpgrades[upgradeId] = false;
             onClickSelectUpgrade(upgradeId);
         }

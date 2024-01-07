@@ -13,6 +13,10 @@ public class BaseOptionSelection : MonoBehaviour
     public GameObject upgradesInfoPanel;
     public GameObject tituloTxt;
     public GameObject recursosTxt;
+    public GameObject astralitaAvailableImg;
+    public GameObject uranioAvailableImg;
+    public GameObject recursosInfoImg;
+    public GameObject[] levelSelectedImage;
 
     private const int DEFAULT = 0;
     private const int PRESSED = 1;
@@ -24,6 +28,8 @@ public class BaseOptionSelection : MonoBehaviour
     void Start()
     {
         onClickChangeMenu(0);
+        astralitaAvailableImg.SetActive(false);
+        uranioAvailableImg.SetActive(false);
     }
 
     public void onClickChangeMenu(int btnId)
@@ -35,8 +41,12 @@ public class BaseOptionSelection : MonoBehaviour
                 stellarMapBtn.GetComponent<Image>().sprite = stellarMapSprites[PRESSED];
                 upgradesBtn.GetComponent<Image>().sprite = stellarMapSprites[DEFAULT];
                 upgradesInfoPanel.SetActive(false);
-                tituloTxt.SetActive(true);
-                recursosTxt.SetActive(true);
+                tituloTxt.SetActive(false);
+                recursosTxt.SetActive(false);
+                for(int i = 0; i< levelSelectedImage.Length; i++)
+                {
+                    levelSelectedImage[i].SetActive(false);
+                }
                 break;
             case 1:
                 upgradesPanel.SetActive(true);
@@ -46,6 +56,9 @@ public class BaseOptionSelection : MonoBehaviour
                 lvlUnlockedInfoPanel.SetActive(false);
                 tituloTxt.SetActive(false);
                 recursosTxt.SetActive(false);
+                astralitaAvailableImg.SetActive(false);
+                uranioAvailableImg.SetActive(false);
+
                 break;
         }
     }

@@ -44,13 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9f521e20629e44da5112d4824d265c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 0.1
+  cameraSpeed: 16
   upLimit: 12
-  downLimit: -6
+  downLimit: -3
   leftLimit: -10
   rightLimit: 8
   freeFlightCamera: {fileID: 0}
   remainingDistance: 0
   minZoom: 3
   maxZoom: 11
-  zoomSpeed: 0.04
+  zoomSpeed: 10
+  spaceship: {fileID: 0}

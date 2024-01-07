@@ -17,6 +17,7 @@ public class UnitDeployment : MonoBehaviour
     private Vector3 mouseWorldPos;
     private int minerEnergyReq;
     private int defenderEnergyReq;
+    private int minerUranioEnergyReq;
     private int unitEnergyReq;
     private string unitName;
     private int numSelectedTroops;
@@ -26,11 +27,21 @@ public class UnitDeployment : MonoBehaviour
 
     private void Start()
     {
-        numSelectedTroops = GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getNumSelectedTroops();
+        //numSelectedTroops = GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getNumSelectedTroops();
+        if(GameManager.currentLevel == 0)
+        {
+            numSelectedTroops = 2;
+        }
+        else if(GameManager.currentLevel == 1)
+        {
+            numSelectedTroops = 3;
+        }
+
         minerEnergyReq = GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getMinerEnergyReq();
         defenderEnergyReq = GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getDefenderEnergyReq();
+        minerUranioEnergyReq = GameObject.Find("Spaceship_P").GetComponent<Spaceship_C>().getMinerUranioEnergyReq();
 
-        for(int i = 3; i >= numSelectedTroops; i--)
+        for (int i = 3; i >= numSelectedTroops; i--)
         {
             troopBtns[i].GetComponent<Image>().sprite = troopBtnsSprites[DISABLED];
         }
@@ -68,8 +79,13 @@ public class UnitDeployment : MonoBehaviour
             return;
         }
 
+        if(unitType == 2 && GameObject.Find("MineroUranio(Clone)") != null)
+        {
+            return;
+        }
+
         //Se entiende que si le da al boton otra vez es para cancelar la accion
-        if(lastUnitType == unitType)
+        if (lastUnitType == unitType)
         {
             Destroy(nuevaUnidad);
             troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
@@ -87,20 +103,28 @@ public class UnitDeployment : MonoBehaviour
         switch (unitType)
         {
             case 0: //Minero
-                    deployingUnit = true;
-                    unitEnergyReq = minerEnergyReq;
-                    unitName = "Minero";
+                deployingUnit = true;
+                unitEnergyReq = minerEnergyReq;
+                unitName = "Minero";
                 break;
             case 1: //Defensor
-                    deployingUnit = true;
-                    unitEnergyReq = defenderEnergyReq;
-                    unitName = "Defender";                              
+                deployingUnit = true;
+                unitEnergyReq = defenderEnergyReq;
+                unitName = "Defender";                              
+                break;
+            case 2: //Minero de Uranio
+                deployingUnit = true;
+                unitEnergyReq = minerUranioEnergyReq;
+                unitName = "MineroUranio";
                 break;
         }
 
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         nuevaUnidad = Instantiate(Resources.Load("Prefabs/" + unitName), new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0), new Quaternion(0, 0, 0, 0)) as GameObject;
-        nuevaUnidad.GetComponent<NavMeshAgent>().enabled = false;
+        if(unitType != 2)
+        {
+            nuevaUnidad.GetComponent<NavMeshAgent>().enabled = false;
+        }
 
         if(lastUnitType != -1)
         {
@@ -123,21 +147,60 @@ public class UnitDeployment : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int layerMask = 1 << LayerMask.NameToLayer("Suelo"); //Así detecta solo esta capa
+            int layerMask;
+            if(lastUnitType == 2)
+            {
+                layerMask = 1 << LayerMask.NameToLayer("VetaUranio");
+            }
+            else
+            {
+                layerMask = 1 << LayerMask.NameToLayer("Suelo");
+            }
             Collider2D hit = Physics2D.OverlapPoint(mouseWorldPos, layerMask);
             if (hit != null)
             {
-                //Debug.Log(hit.GetComponent<CompositeCollider2D>().tag);
-                if (hit.GetComponent<CompositeCollider2D>().CompareTag("Suelo"))
+                if(lastUnitType == 2)
+                {
+                    if (hit.GetComponent<BoxCollider2D>().CompareTag("VetaUranio"))
+                    {
+                        if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
+                        {
+                            //Se completa el despliegue de la unidad
+                            GetComponent<EnergyController>().useEnergy(unitEnergyReq);
+                            nuevaUnidad.GetComponent<CombatController>().isBeingDeployed = false;
+                            if (lastUnitType != 2)
+                            {
+                                nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
+                            }
+                            deployingUnit = false;
+                            troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
+                            if (lastUnitType == 2)
+                            {
+                                nuevaUnidad.transform.position = new Vector2(hit.transform.position.x, hit.transform.position.y -1);
+                            }
+                            nuevaUnidad = null;
+                            lastUnitType = -1;
+                            GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().updateEnemiesTarget();
+                        }
+                    }
+                }
+                else if (hit.GetComponent<CompositeCollider2D>().CompareTag("Suelo"))
                 {
                     if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
                     {
                         //Se completa el despliegue de la unidad
                         GetComponent<EnergyController>().useEnergy(unitEnergyReq);
                         nuevaUnidad.GetComponent<CombatController>().isBeingDeployed = false;
-                        nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
+                        if (lastUnitType != 2)
+                        {
+                            nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
+                        }
                         deployingUnit = false;
                         troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
+                        if (lastUnitType == 2)
+                        {
+                            nuevaUnidad.transform.position = hit.transform.position;
+                        }
                         nuevaUnidad = null;
                         lastUnitType = -1;
                         GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().updateEnemiesTarget();
@@ -196,8 +259,6 @@ public class UnitDeployment : MonoBehaviour
         {
             return false;
         }
-
-
     }
 
     private bool checkIfEnoughEnergy(int unitType)
@@ -215,6 +276,15 @@ public class UnitDeployment : MonoBehaviour
                 }
             case 1:
                 if (this.GetComponent<EnergyController>().checkIfEnoughEnergy(defenderEnergyReq))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case 2:
+                if (this.GetComponent<EnergyController>().checkIfEnoughEnergy(minerUranioEnergyReq))
                 {
                     return true;
                 }

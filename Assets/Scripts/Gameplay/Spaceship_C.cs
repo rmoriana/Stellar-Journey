@@ -13,6 +13,7 @@ public class Spaceship_C : MonoBehaviour
     public float energyGainSpeed;
     public int minerEnergyReq;
     public int defenderEnergyReq;
+    public int minerUranioEnergyReq;
     public int numSelectedTroops;
 
     [Header("Inicio y final del nivel")]
@@ -38,6 +39,7 @@ public class Spaceship_C : MonoBehaviour
     public GameObject mentecolmena;
     private string totalGameTime;
     private int levelAstralitaAmount;
+    private int levelUranioAmount;
 
     public GameObject FadeInOutImg;
     private Task task;
@@ -46,6 +48,7 @@ public class Spaceship_C : MonoBehaviour
     void Start()
     {
         levelAstralitaAmount = 0;
+        levelUranioAmount = 0;
         gameEnding = false;
         resumeCanvas.SetActive(false);
         hud.SetActive(false);
@@ -113,10 +116,19 @@ public class Spaceship_C : MonoBehaviour
     }
 
     //Recibe una unidad de un recurso
-    public void deployMineral()
+    public void deployMineral(int type)
     {
-        levelAstralitaAmount++;
-        GameObject.Find("BottomRightPanel").GetComponent<RecursosController>().addResource();
+        switch (type)
+        {
+            case 0:
+                levelAstralitaAmount++;
+                GameObject.Find("BottomRightPanel").GetComponent<RecursosController>().addResource(type);
+                break;
+            case 1:
+                levelUranioAmount++;
+                GameObject.Find("BottomRightPanel").GetComponent<RecursosController>().addResource(type);
+                break;
+        }
     }
 
     //Inicia la secuencia de finalización de partida
@@ -146,6 +158,10 @@ public class Spaceship_C : MonoBehaviour
             {
                 levelAstralitaAmount = Mathf.RoundToInt(levelAstralitaAmount * ((100 - GameManager.spaceshipImprovedLootPenalty) / 100f));
             }
+            if(levelUranioAmount > 0)
+            {
+                levelUranioAmount -= 1;
+            }
         }
         else
         {
@@ -154,10 +170,17 @@ public class Spaceship_C : MonoBehaviour
         GameManager.astralitaTotal += levelAstralitaAmount;
         GameObject.Find("AstralitaQuantityTxt").GetComponent<TMP_Text>().text = levelAstralitaAmount.ToString();
 
+        if (GameManager.levelsResourcesAvailable[GameManager.currentLevel] == 1)
+        {
+            GameManager.uranioTotal += levelUranioAmount;
+            GameObject.Find("UranioQuantityText").GetComponent<TMP_Text>().text = levelUranioAmount.ToString();
+        }
+
         //Si es su primera partida del nivel o ha conseguido más recursos guardamos la información como "mejor expedición".
         if (levelAstralitaAmount > GameManager.levelsMaxAstralita[GameManager.currentLevel])
         {
             GameManager.levelsMaxAstralita[GameManager.currentLevel] = levelAstralitaAmount;
+            GameManager.levelsMaxUranio[GameManager.currentLevel] = levelUranioAmount;
             GameManager.levelsLongestExpedition[GameManager.currentLevel] = totalGameTime;
         }
     }
@@ -204,6 +227,11 @@ public class Spaceship_C : MonoBehaviour
     public int getDefenderEnergyReq()
     {
         return defenderEnergyReq;
+    }
+
+    public int getMinerUranioEnergyReq()
+    {
+        return minerUranioEnergyReq;
     }
 
     public int getNumSelectedTroops()

@@ -213,7 +213,6 @@ MonoBehaviour:
   minLandingSpeed: 0.5
   mentecolmena: {fileID: 0}
   FadeInOutImg: {fileID: 0}
-  waitingFadeToGo: 0
 --- !u!114 &3457522956845613859
 MonoBehaviour:
   m_ObjectHideFlags: 0

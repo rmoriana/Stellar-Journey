@@ -111,37 +111,56 @@ public class MenteColmenaController: MonoBehaviour
     //Calcular las unidades que va a invocar en la siguiente franja de tiempo
     private void setSpawnStrategy()
     {
-        if (startFirstCycle)
+        if(GameManager.currentLevel == 0)
         {
-            threatLevel = 0;
-        }
-        else
-        {
-            switch (getNewThreatLevel())
+            if (startFirstCycle)
             {
-                case REDUCE: //Reducir el nivel de amenaza
-                    if (threatLevel > 0)
-                    {
-                        threatLevel--;
-                    }
-                    break;
-                case INCREASE: //Aumentar el nivel de amenaza
-                    if (threatLevel < 2)
-                    {
-                        threatLevel++;
-                    }
-                    break;
-                case REDUCE_DOUBLE:
-                    if(threatLevel == 2)
-                    {
-                        threatLevel -= 2;
-                    }
-                    else if(threatLevel > 0)
-                    {
-                        threatLevel--;
-                    }
-                    break;
-                default: threatLevel = KEEP; break;
+                threatLevel = 0;
+            }
+            else
+            {
+                switch (getNewThreatLevel())
+                {
+                    case REDUCE: //Reducir el nivel de amenaza
+                        if (threatLevel > 0)
+                        {
+                            threatLevel--;
+                        }
+                        break;
+                    case INCREASE: //Aumentar el nivel de amenaza
+                        if (threatLevel < 2)
+                        {
+                            threatLevel++;
+                        }
+                        break;
+                    case REDUCE_DOUBLE:
+                        if (threatLevel == 2)
+                        {
+                            threatLevel -= 2;
+                        }
+                        else if (threatLevel > 0)
+                        {
+                            threatLevel--;
+                        }
+                        break;
+                    default: threatLevel = KEEP; break;
+                }
+            }
+        }
+        else //El sistema diseñado para el nivel 0 no funcionará bien en el nivel 1, así que por falta de tiempo en este nivel hará rotaciones de estrategias
+        {
+            if (startFirstCycle)
+            {
+                threatLevel = 0;
+            }
+            else
+            {
+                switch(threatLevel)
+                {
+                    case 0: threatLevel = 1; break;
+                    case 1: threatLevel = 2; break;
+                    case 2: threatLevel = 0; break;
+                }
             }
         }
 

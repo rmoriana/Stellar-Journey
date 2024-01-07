@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6501897940926319425}
   - component: {fileID: 2336256634843674801}
   m_Layer: 0
-  m_Name: Cristal_P
+  m_Name: Astralita_P
   m_TagString: Cristal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
