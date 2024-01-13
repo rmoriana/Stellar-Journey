@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public static int[] levelsMaxUranio = new int[numLevels]; //Uranio máximo que se ha conseguido en cada nivel
     public static string[] levelsLongestExpedition = new string[numLevels]; //Expedición más larga conseguida en cada nivel
     public static int[] levelsResourcesAvailable = {0, 1}; //Marca si el planeta tiene o no uranio (todos tienen astralita)
-    public static int[] astralitaUnlockCost = {0, 1000}; //Coste de desbloqueo de un nivel en Astralita
+    public static int[] astralitaUnlockCost = {0, 250}; //Coste de desbloqueo de un nivel en Astralita
     public static int currentLevel = 0; //Nivel actual o último nivel que se ha jugado si no se está jugando
     public static string[] levelsNames = { "Tar I", "Gaovin I" }; //Nombres de los planetas que representan los niveles
     public static bool[] shipUpgrades = new bool[3]; //Marca qué habilidades de la rama de la nave están desbloqueadas

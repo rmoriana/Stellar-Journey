@@ -179,5 +179,9 @@ public class EnemyController : MonoBehaviour
             contadorAux++; //Para evitar el bucle infinito
         }
         agent.SetDestination(possiblePos);
+        if(Random.Range(0,5) == 1)
+        {
+            FindObjectOfType<AudioManager>().Play("EnemigoIdle");
+        }
     }
 }

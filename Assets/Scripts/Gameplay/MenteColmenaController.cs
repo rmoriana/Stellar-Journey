@@ -171,8 +171,8 @@ public class MenteColmenaController: MonoBehaviour
         currentEnergy -= desertScarabCost * unitsLeftToSpawn; //Resta la energía de todas las unidades que va a generar en este intervalo
         Debug.Log("Nuevo ciclo: Es el número " + totalCycles);
         Debug.Log("Saldran " + unitsLeftToSpawn + " unidades, una cada " + currentSpawnInterval + " segundos");
-        Debug.Log("El nivel ira es: " + angerLvl);
-        Debug.Log("El nivel de amenaza es: " + threatLevel);
+        //Debug.Log("El nivel ira es: " + angerLvl);
+        //Debug.Log("El nivel de amenaza es: " + threatLevel);
         //Setea las variables para dividir la fase en tres ataques
         groupAttackCounter = 0;
         if (threatLevel == 1)
@@ -265,6 +265,7 @@ public class MenteColmenaController: MonoBehaviour
     {
         if (unitsLeftToSpawn == 0)
         {
+            FindObjectOfType<AudioManager>().Play("BigAttackHorn");
             GameObject[] swarm = GameObject.FindGameObjectsWithTag("EnemyUnit");
             for (int i = 0; i < swarm.Length; i++)
             {
@@ -327,7 +328,7 @@ public class MenteColmenaController: MonoBehaviour
     private int getNewThreatLevel()
     {
         //En cualquier fase de la partida, si no se ha destruido ninguna unidad del jugador la amenaza debe aumentar.
-        Debug.Log("En este ciclo han muerto "+ lastCyclePlayerUnitsKilled + " unidades del jugador");
+        //Debug.Log("En este ciclo han muerto "+ lastCyclePlayerUnitsKilled + " unidades del jugador");
         if (lastCyclePlayerUnitsKilled == 0) 
         {
             return INCREASE;
@@ -342,17 +343,22 @@ public class MenteColmenaController: MonoBehaviour
         switch (angerLvl)
         {
             case 0: //Fase 1: Si ha matado 1 unidad se mantiene y si ha matado más de 1 se reduce
-                if (lastCyclePlayerUnitsKilled == 1) return REDUCE;
+                if (lastCyclePlayerUnitsKilled == 1) return KEEP;
+                else if (lastCyclePlayerUnitsKilled == 2) return REDUCE;
                 else return REDUCE_DOUBLE;
             case 1: //Fase 2: Si ha matado 1 unidad aumenta la amenaza, si ha matado 2 se mantiene y si ha matado 3 o más se reduce
-                if (lastCyclePlayerUnitsKilled == 1) return KEEP;
-                else if (lastCyclePlayerUnitsKilled <= 2) return REDUCE;
-                else return REDUCE_DOUBLE;
-            case 2: //Fase 3: Si ha matado menos de 3 unidades aumenta la amenaza, si ha matado entre 3 y 6 se mantiene y si ha matado más de 6 se reduce
-                if (lastCyclePlayerUnitsKilled == 1) return INCREASE;
-                else if (lastCyclePlayerUnitsKilled <= 2) return KEEP;
+                if (lastCyclePlayerUnitsKilled <= 2) return KEEP;
                 else if (lastCyclePlayerUnitsKilled <= 4) return REDUCE;
                 else return REDUCE_DOUBLE;
+            case 2: //Fase 3: Si ha matado menos de 3 unidades aumenta la amenaza, si ha matado entre 3 y 6 se mantiene y si ha matado más de 6 se reduce
+                if (lastCyclePlayerUnitsKilled <= 2) return INCREASE;
+                else if (lastCyclePlayerUnitsKilled == 3) return KEEP;
+                else if (lastCyclePlayerUnitsKilled <= 4) return REDUCE;
+                else return REDUCE_DOUBLE;
+            case 3: //Fase 4: A por todas
+                if (lastCyclePlayerUnitsKilled <= 4) return INCREASE;
+                else if (lastCyclePlayerUnitsKilled == 6) return KEEP;
+                else return REDUCE;
             default: return KEEP; //Nunca debería entrar en este default pero hay que ponerlo para que siempre devuelva algo
         }
     }
@@ -361,6 +367,7 @@ public class MenteColmenaController: MonoBehaviour
     {
         if (totalCycles <= 4) angerLvl = 0;
         else if (totalCycles <= 7) angerLvl = 1;
-        else angerLvl = 2;
+        else if (totalCycles <= 12) angerLvl = 2;
+        else angerLvl = 3;
     }
 }

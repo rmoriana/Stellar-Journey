@@ -60,6 +60,7 @@ public class CuentaAtrasController : MonoBehaviour
     public void SpaceshipBtnAction()
     {
         spaceship.GetComponent<Spaceship_C>().gameEnding = !spaceship.GetComponent<Spaceship_C>().gameEnding;
+        FindObjectOfType<AudioManager>().Play("BtnBigClick");
 
         if (spaceship.GetComponent<Spaceship_C>().gameEnding)
         {
@@ -69,6 +70,7 @@ public class CuentaAtrasController : MonoBehaviour
             despegueBtn.GetComponent<Image>().sprite = despegueBtnSprites[PRESSED];
             leftRocket.GetComponent<Image>().enabled = true;
             rightRocket.GetComponent<Image>().enabled = true;
+            FindObjectOfType<AudioManager>().PlayLoop("SpaceshipCuentaAtras");
         }
         else
         {
@@ -80,6 +82,7 @@ public class CuentaAtrasController : MonoBehaviour
             despegueBtn.GetComponent<Image>().sprite = despegueBtnSprites[DEFAULT];
             leftRocket.GetComponent<Image>().enabled = false;
             rightRocket.GetComponent<Image>().enabled = false;
+            FindObjectOfType<AudioManager>().Stop("SpaceshipCuentaAtras");
         }
     }
 

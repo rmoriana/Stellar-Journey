@@ -61,5 +61,6 @@ public class BaseOptionSelection : MonoBehaviour
 
                 break;
         }
+        FindObjectOfType<AudioManager>().Play("BtnBigClick");
     }
 }

@@ -56,6 +56,8 @@ public class Spaceship_C : MonoBehaviour
         gameStarting = true;
         FadeInOutImg.SetActive(true);
         StartCoroutine(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(false));
+        FindObjectOfType<AudioManager>().Play("SpaceshipLanding");
+        FindObjectOfType<AudioManager>().PlayLoop("LevelsMusic");
     }
 
     private void Update()
@@ -102,6 +104,7 @@ public class Spaceship_C : MonoBehaviour
                 gameStarting = false;
                 hud.SetActive(true);
                 mentecolmena.GetComponent<MenteColmenaController>().setFirstCycle();
+                FindObjectOfType<AudioManager>().Stop("SpaceshipLanding");
             }
             else
             {
@@ -111,6 +114,7 @@ public class Spaceship_C : MonoBehaviour
 
         if (task != null && !task.Running)
         {
+            FindObjectOfType<AudioManager>().Stop("LevelsMusic");
             SceneManager.LoadScene(1);
         }
     }
@@ -141,6 +145,8 @@ public class Spaceship_C : MonoBehaviour
         GameObject.Find("HUD").SetActive(false);
         spaceshipCamera.GetComponent<CinemachineVirtualCamera>().Priority = 2;
         waitingForCamera = true;
+        FindObjectOfType<AudioManager>().Stop("SpaceshipCuentaAtras");
+        FindObjectOfType<AudioManager>().Play("SpaceshipLanding");
     }
 
     private void showLvlResume()
@@ -190,6 +196,7 @@ public class Spaceship_C : MonoBehaviour
         GameManager.sceneToLoad = 2;
         FadeInOutImg.SetActive(true);
         task = new Task(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(true));
+        FindObjectOfType<AudioManager>().Play("BtnBigClick");
     }
 
     private bool checkIfCameraIsIdle()

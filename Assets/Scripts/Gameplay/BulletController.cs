@@ -15,6 +15,10 @@ public class BulletController : MonoBehaviour
     private float movementX, movementY;
     private float timeAlive;
 
+    private void Start()
+    {
+        FindObjectOfType<AudioManager>().Play("TurretShoot");
+    }
     // Update is called once per frame
     void Update()
     {
@@ -57,6 +61,7 @@ public class BulletController : MonoBehaviour
         if (other.CompareTag("EnemyUnit"))
         {
             other.GetComponent<CombatController>().receiveDmg(dmg);
+            FindObjectOfType<AudioManager>().Play("EnemyHit");
             Destroy(gameObject);
         }else if (other.CompareTag("Pared"))
         {

@@ -52,7 +52,7 @@ MonoBehaviour:
   threatLevel: 0
   lastCyclePlayerUnitsKilled: 0
   spaceship: {fileID: 0}
-  peaceTime: 5
+  peaceTime: 10
   spawnPoints:
   - {fileID: 0}
   - {fileID: 0}

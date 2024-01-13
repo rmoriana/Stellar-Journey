@@ -16,6 +16,7 @@ public class CombatController : MonoBehaviour
     private float attackCooldown;
     public bool isBeingDeployed;
     public bool isSpaceship;
+    public bool isMineroUranio;
 
     [Header("UI")]
     public Canvas healthCanvas;
@@ -66,7 +67,13 @@ public class CombatController : MonoBehaviour
             {
                 if(isPlayerUnit)
                 {
+                    FindObjectOfType<AudioManager>().Play("PlayerUnitDestroyed");
                     GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().addUnitKilled();
+                }
+
+                if(isMineroUranio)
+                {
+                    FindObjectOfType<AudioManager>().Stop("MineroUranioDriller");
                 }
                 Destroy(gameObject);
             }
@@ -128,6 +135,18 @@ public class CombatController : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
         colorChanged = true;
         resetColorTimer = 0;
+
+        if(isPlayerUnit)
+        {
+            if(isSpaceship)
+            {
+                FindObjectOfType<AudioManager>().Play("SpaceshipTakeDmg");
+            }
+            else
+            {
+                FindObjectOfType<AudioManager>().Play("EnemyAttack");
+            }
+        }
     }
 
     public int getCurrentHP()

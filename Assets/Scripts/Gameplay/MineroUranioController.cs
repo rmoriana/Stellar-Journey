@@ -14,6 +14,7 @@ public class MineroUranioController : MonoBehaviour
     {
         spaceship = GameObject.Find("Spaceship_P");
         bottomRightPanel = GameObject.Find("BottomRightPanel");
+        FindObjectOfType<AudioManager>().PlayLoop("MineroUranioDriller");
     }
 
     // Update is called once per frame
@@ -27,6 +28,7 @@ public class MineroUranioController : MonoBehaviour
         if (miningCooldown >= miningSpeed)
         {
             spaceship.GetComponent<Spaceship_C>().deployMineral(1);
+            FindObjectOfType<AudioManager>().Play("UranioGain");
             miningCooldown = 0;
         }
         else

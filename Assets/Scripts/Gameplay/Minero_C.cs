@@ -115,6 +115,7 @@ public class Minero_C : MonoBehaviour
                         cargo--;
                         currentTarget.GetComponent<Spaceship_C>().deployMineral(0);
                         deployingCooldown = 0;
+                        FindObjectOfType<AudioManager>().Play("AstralitaGain");
                     }
                     else
                     {

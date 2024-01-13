@@ -44,6 +44,7 @@ public class UnitDeployment : MonoBehaviour
         for (int i = 3; i >= numSelectedTroops; i--)
         {
             troopBtns[i].GetComponent<Image>().sprite = troopBtnsSprites[DISABLED];
+            troopBtns[i].interactable = false;
         }
 
         lastUnitType = -1;
@@ -76,6 +77,7 @@ public class UnitDeployment : MonoBehaviour
         if (!checkIfEnoughEnergy(unitType))
         {
             //TODO: Mensaje de que no hay energía para esa unidad
+            FindObjectOfType<AudioManager>().Play("ErrorBtn");
             return;
         }
 
@@ -84,6 +86,12 @@ public class UnitDeployment : MonoBehaviour
             return;
         }
 
+        if(unitType == 2 && GameManager.currentLevel == 0)
+        {
+            return;
+        }
+
+        FindObjectOfType<AudioManager>().Play("BtnClick");
         //Se entiende que si le da al boton otra vez es para cancelar la accion
         if (lastUnitType == unitType)
         {
@@ -166,22 +174,21 @@ public class UnitDeployment : MonoBehaviour
                         if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
                         {
                             //Se completa el despliegue de la unidad
+                            FindObjectOfType<AudioManager>().Play(unitName);
                             GetComponent<EnergyController>().useEnergy(unitEnergyReq);
                             nuevaUnidad.GetComponent<CombatController>().isBeingDeployed = false;
-                            if (lastUnitType != 2)
-                            {
-                                nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
-                            }
                             deployingUnit = false;
                             troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
-                            if (lastUnitType == 2)
-                            {
-                                nuevaUnidad.transform.position = new Vector2(hit.transform.position.x, hit.transform.position.y -1);
-                            }
+                            nuevaUnidad.transform.position = new Vector2(hit.transform.position.x, hit.transform.position.y -1);
+                            nuevaUnidad.GetComponent<NavMeshObstacle>().enabled = true;
                             nuevaUnidad = null;
                             lastUnitType = -1;
                             GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().updateEnemiesTarget();
                         }
+                    }
+                    else
+                    {
+                        FindObjectOfType<AudioManager>().Play("ErrorBtn");
                     }
                 }
                 else if (hit.GetComponent<CompositeCollider2D>().CompareTag("Suelo"))
@@ -189,23 +196,25 @@ public class UnitDeployment : MonoBehaviour
                     if (GetComponent<EnergyController>().checkIfEnoughEnergy(unitEnergyReq))
                     {
                         //Se completa el despliegue de la unidad
+                        FindObjectOfType<AudioManager>().Play(unitName);
                         GetComponent<EnergyController>().useEnergy(unitEnergyReq);
                         nuevaUnidad.GetComponent<CombatController>().isBeingDeployed = false;
-                        if (lastUnitType != 2)
-                        {
-                            nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
-                        }
+                        nuevaUnidad.GetComponent<NavMeshAgent>().enabled = true;
                         deployingUnit = false;
                         troopBtns[lastUnitType].GetComponent<Image>().sprite = troopBtnsSprites[DEFAULT];
-                        if (lastUnitType == 2)
-                        {
-                            nuevaUnidad.transform.position = hit.transform.position;
-                        }
                         nuevaUnidad = null;
                         lastUnitType = -1;
                         GameObject.Find("MenteColmena").GetComponent<MenteColmenaController>().updateEnemiesTarget();
                     }
                 }
+                else
+                {
+                    FindObjectOfType<AudioManager>().Play("ErrorBtn");
+                }
+            }
+            else
+            {
+                FindObjectOfType<AudioManager>().Play("ErrorBtn");
             }
         }
 

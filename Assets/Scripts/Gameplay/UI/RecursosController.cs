@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class RecursosController : MonoBehaviour
@@ -6,7 +7,8 @@ public class RecursosController : MonoBehaviour
 
     public TMP_Text astralitaQuantityText;
     public TMP_Text uranioQuantityText;
-    public TMP_Text uranioTimeRemaining;
+    public GameObject uranioProgressBg;
+    public Image uranioProgressBar;
     public GameObject uranioImage;
     private int currentAstralita, currentUranio;
 
@@ -19,13 +21,14 @@ public class RecursosController : MonoBehaviour
         if (GameManager.levelsResourcesAvailable[GameManager.currentLevel] == 1)
         {
             uranioImage.SetActive(true);
+            uranioProgressBg.SetActive(true);
         }
         else
         {
             uranioImage.SetActive (false);
             uranioQuantityText.text = "";
+            uranioProgressBg.SetActive(false);
         }
-        uranioTimeRemaining.text = "";
         updateResourcesText();
     }
 
@@ -53,7 +56,7 @@ public class RecursosController : MonoBehaviour
     public void updateUranioTime(float time)
     {
         //TODO: Eliminar hardcode (poniendo el tiempo en GameManager)
-        uranioTimeRemaining.text = (120 - time).ToString("F2");
+        uranioProgressBar.fillAmount = time / 120;
     }
 }
 

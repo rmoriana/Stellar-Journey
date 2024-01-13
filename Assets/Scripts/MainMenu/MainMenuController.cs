@@ -20,7 +20,8 @@ public class MainMenuController : MonoBehaviour
         FadeInOutImg.SetActive(true);
         task2 = new Task(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(false, 1));
         currentOptionSelected = 0;
-        updateCurrentOptionSelected();        
+        updateCurrentOptionSelected();
+        FindObjectOfType<AudioManager>().PlayLoop("MainMenuMusic");
     }
 
 
@@ -32,6 +33,7 @@ public class MainMenuController : MonoBehaviour
             if (!task.Running)
             {
                 waitingFadeToChangeScene = false;
+                FindObjectOfType<AudioManager>().Stop("MainMenuMusic");
                 SceneManager.LoadScene(1);
             }
         }
@@ -43,10 +45,11 @@ public class MainMenuController : MonoBehaviour
 
     public void onClickAction(int actionId)
     {
+        FindObjectOfType<AudioManager>().Play("BtnBigClick");
         switch (actionId)
         {
             case 0:
-                GameManager.sceneToLoad = 3;
+                GameManager.sceneToLoad = 2;
                 FadeInOutImg.SetActive(true);
                 task = new Task(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(true));
                 waitingFadeToChangeScene = true;
@@ -56,6 +59,10 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void onHoverAction(int actionId) {
+        if(actionId != currentOptionSelected)
+        {
+            FindObjectOfType<AudioManager>().Play("BtnClick");
+        }
         currentOptionSelected = actionId;
         updateCurrentOptionSelected();
     }
@@ -81,12 +88,14 @@ public class MainMenuController : MonoBehaviour
         {
             if (currentOptionSelected == 0) currentOptionSelected = 1;
             else currentOptionSelected = 0;
+            FindObjectOfType<AudioManager>().Play("BtnClick");
         }
 
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (currentOptionSelected == 1) currentOptionSelected = 0;
             else currentOptionSelected = 1;
+            FindObjectOfType<AudioManager>().Play("BtnClick");
         }
 
         updateCurrentOptionSelected();

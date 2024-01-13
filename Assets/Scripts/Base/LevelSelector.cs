@@ -52,12 +52,15 @@ public class LevelSelector : MonoBehaviour
 
         FadeInOutImg.SetActive(true);
         StartCoroutine(FadeInOutImg.GetComponent<TransitionFadeInOut>().FadeInOutEffect(false));
+
+        FindObjectOfType<AudioManager>().PlayLoop("BaseMusic");
     }
 
     private void Update()
     {
         if(waitingFadeToChangeScene && !task.Running)
         {
+            FindObjectOfType<AudioManager>().Stop("BaseMusic");
             SceneManager.LoadScene(1);
             waitingFadeToChangeScene = false;
         }
@@ -69,6 +72,7 @@ public class LevelSelector : MonoBehaviour
         lockedPanel.SetActive(false);
         astralitaAvailableImage.SetActive(true);
         changeSelectedPlanet(planetId);
+        FindObjectOfType<AudioManager>().Play("SeleccionarPlaneta");
 
         if (GameManager.levelsResourcesAvailable[planetId] == 1)
         {
@@ -126,6 +130,7 @@ public class LevelSelector : MonoBehaviour
         lockedPanel.SetActive(true);
         changeSelectedPlanet(planetId);
         astralitaAvailableImage.SetActive(true);
+        FindObjectOfType<AudioManager>().Play("SeleccionarPlaneta");
 
         if (GameManager.levelsResourcesAvailable[planetId] == 1)
         {
@@ -161,6 +166,7 @@ public class LevelSelector : MonoBehaviour
 
     public void startLevel(int planetId)
     {
+        FindObjectOfType<AudioManager>().Play("BtnClick");
         GameManager.currentLevel = planetId;
         GameManager.sceneToLoad = planetId + 3; //El número de escena es el nivel escogido + 3;
         waitingFadeToChangeScene = true;
@@ -170,13 +176,15 @@ public class LevelSelector : MonoBehaviour
 
     public void unlockLevel(int planetId)
     {
-        if(GameManager.astralitaTotal >= GameManager.astralitaUnlockCost[planetId])
+        FindObjectOfType<AudioManager>().Play("BtnClick");
+        if (GameManager.astralitaTotal >= GameManager.astralitaUnlockCost[planetId])
         {
             GameManager.levelsState[planetId] = true;
             GameManager.astralitaTotal -= GameManager.astralitaUnlockCost[planetId];
             GetComponent<BaseResourcesPanel>().updateAstralitaText();
             lockedPlanets[planetId].SetActive(false);
             unlockedPlanets[planetId].SetActive(true);
+            FindObjectOfType<AudioManager>().Play("DesbloqueoPlaneta");
             clickOnUnlockedPlanet(planetId);
         }
     }

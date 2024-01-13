@@ -28,6 +28,7 @@ public class UpgradesController : MonoBehaviour
         scaleSelectedUpgrade(upgradeId);
         showUpgradeInfo(upgradeId);
         updateUpgradesBtnsAndLines();
+        FindObjectOfType<AudioManager>().Play("SeleccionarPlaneta");
     }
 
     private void scaleSelectedUpgrade(int upgradeId)
@@ -96,6 +97,11 @@ public class UpgradesController : MonoBehaviour
             GetComponent<BaseResourcesPanel>().updateUranioText();
             GameManager.shipUpgrades[upgradeId] = true;
             onClickSelectUpgrade(upgradeId);
+            FindObjectOfType<AudioManager>().Play("ActivarMejora");
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("ErrorBtn");
         }
     }
 
@@ -107,6 +113,11 @@ public class UpgradesController : MonoBehaviour
             GetComponent<BaseResourcesPanel>().updateUranioText();
             GameManager.shipUpgrades[upgradeId] = false;
             onClickSelectUpgrade(upgradeId);
+            FindObjectOfType<AudioManager>().Play("DesactivarMejora");
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("ErrorBtn");
         }
     }
 
